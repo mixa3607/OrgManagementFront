@@ -3,6 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  authApiUrl: 'http://mg.arkprojects.space:5100/api/1.0',
+  managementApiUrl: 'http://mg.arkprojects.space:5200/api/1.0',
   production: false
 };
 

@@ -1,0 +1,9 @@
+<div class="container" fxLayout="column">
+  <h1 mat-dialog-title>Pass challenge</h1>
+  <p>Enter challenge phrase (send to your game account)</p>
+  <mat-form-field>
+    <mat-label>Phrase</mat-label>
+    <input matInput #phraseInput>
+  </mat-form-field>
+  <button mat-raised-button color="accent" (click)="passChallenge(phraseInput.value)">Pass</button>
+</div>

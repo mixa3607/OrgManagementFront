@@ -1,0 +1,19 @@
+<div class="container mat-elevation-z4">
+  <mat-toolbar color="primary" class="header">
+    <mat-toolbar-row class="no-padding" fxLayout="row">
+      <button mat-icon-button (click)="sidenavService.mainSidenavSubject.next()"><mat-icon>menu</mat-icon></button>
+      <div fxFlex="auto"></div>
+
+      <span>{{userName}}</span>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Sign out</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>

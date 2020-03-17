@@ -1,0 +1,42 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <div class="tabs">
+    <mat-tab-group mat-align-tabs="center" dynamicHeight >
+      <mat-tab label="Login">
+        <form fxLayout="column" [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+          <mat-form-field>
+            <mat-label>User name</mat-label>
+            <input matInput placeholder="User name" type="text"  formControlName="userName">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Password" type="password" formControlName="password">
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Sign In</button>
+        </form>
+      </mat-tab>
+
+      <mat-tab label="Registration">
+        <form fxLayout="column" [formGroup]="registryForm" (ngSubmit)="registry(registryForm.value)">
+          <mat-form-field>
+            <mat-label>User name</mat-label>
+            <input matInput placeholder="User name" type="text" formControlName="userName">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Password" type="password" formControlName="password">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Retry password</mat-label>
+            <input matInput placeholder="Retry password" type="password" formControlName="passwordRetry">
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!registryForm.valid">Registry</button>
+
+
+        </form>
+        <button mat-raised-button color="primary" type="button" (click)="openPassChallengeDialog(registryForm.value)">Open Dialog</button>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+</div>

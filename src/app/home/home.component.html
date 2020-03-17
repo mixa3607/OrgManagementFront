@@ -1,0 +1,37 @@
+<mat-sidenav-container class="example-container" fxFill>
+  <mat-sidenav #sidenav mode="push" [(opened)]="opened">
+    <mat-list>
+      <div mat-subheader>Main</div>
+      <mat-list-item>
+        <button mat-button class="sectionBtn">Employees</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button class="sectionBtn">Certs</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button class="sectionBtn">Devices</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button class="sectionBtn">Software</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button class="sectionBtn">Device actions</button>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+
+      <div mat-subheader>Service tables</div>
+      <mat-list-item>
+        <button mat-button class="sectionBtn">Software types</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button class="sectionBtn">Device types</button>
+      </mat-list-item>
+    </mat-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <app-header></app-header>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
