@@ -1,0 +1,138 @@
+<h2 mat-dialog-title>Новый сотрудник</h2>
+
+<mat-dialog-content>
+
+  <div fxLayout="row">
+    <div fxLayout="column">
+      <form fxLayout="column" [formGroup]="mainForm">
+        <div style="font-size: 0.9rem;">Основная информация</div>
+        <mat-form-field>
+          <mat-label>ФИО</mat-label>
+          <input matInput placeholder="ФИО" type="text" formControlName="initials">
+        </mat-form-field>
+
+        <div fxLayout="row">
+          <mat-form-field>
+            <mat-label>Отдел</mat-label>
+            <input matInput placeholder="Отдел" type="text" formControlName="department">
+          </mat-form-field>
+          <div class="h-gap"></div>
+          <mat-form-field>
+            <mat-label>Должность</mat-label>
+            <input matInput placeholder="Должность" type="text" formControlName="workingPosition">
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row">
+          <mat-form-field>
+            <mat-label>IPv4 адрес</mat-label>
+            <input [dropSpecialCharacters]="false" matInput mask="000.000.000.000" placeholder="IPv4 адрес" type="text" formControlName="ipv4Address">
+          </mat-form-field>
+          <div class="h-gap"></div>
+          <mat-form-field>
+            <mat-label>Доменное имя</mat-label>
+            <input matInput placeholder="Доменное имя" type="text" formControlName="domainNameEntry">
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row">
+          <mat-form-field>
+            <mat-label>Номер телефона</mat-label>
+            <input [dropSpecialCharacters]="false" matInput mask="+0 (000)-000-00-00" value="+7" placeholder="Номер телефона" type="text" formControlName="phoneNumber">
+          </mat-form-field>
+          <div class="h-gap"></div>
+          <mat-form-field>
+            <mat-label>Почта</mat-label>
+            <input matInput placeholder="Почта" type="text" formControlName="email">
+          </mat-form-field>
+        </div>
+      </form>
+
+      <mat-divider></mat-divider>
+
+      <form [formGroup]="taxIdForm" fxLayout="column">
+        <div style="font-size: 0.9rem;">ИНН</div>
+        <div fxLayout="row">
+          <mat-form-field>
+            <mat-label>Номер</mat-label>
+            <input matInput placeholder="Номер" type="text" formControlName="serialNumber">
+          </mat-form-field>
+          <div class="h-gap"></div>
+          <mat-form-field>
+            <ngx-mat-file-input [formControl]="taxIdScanControl" placeholder="Скан"></ngx-mat-file-input>
+            <mat-icon matSuffix>folder</mat-icon>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+
+    <mat-divider vertical style="margin: 0.3rem"></mat-divider>
+
+    <div>
+      <form [formGroup]="passportForm" fxLayout="column">
+        <div style="font-size: 0.9rem;">Паспорт</div>
+        <div fxLayout="row">
+          <mat-form-field>
+            <mat-label>Серия</mat-label>
+            <input matInput mask="00 00" placeholder="Серия" type="text" formControlName="batch">
+          </mat-form-field>
+          <div class="h-gap"></div>
+          <mat-form-field>
+            <mat-label>Номер</mat-label>
+            <input matInput mask="000000" placeholder="Номер" type="text" formControlName="serialNumber">
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row">
+          <mat-form-field>
+            <mat-label>Кем выдан</mat-label>
+            <input matInput placeholder="Кем выдан" type="text" formControlName="issuer">
+          </mat-form-field>
+          <div class="h-gap"></div>
+          <mat-form-field>
+            <mat-label>Код подразделения</mat-label>
+            <input matInput mask="000-000" placeholder="Код подразделения" type="text" formControlName="issuerNum">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row">
+          <mat-form-field>
+            <mat-label>Когда выдан</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="issuedAt">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <div class="h-gap"></div>
+          <mat-form-field>
+            <mat-label>Место регистрации</mat-label>
+            <input matInput placeholder="Место регистрации" type="text" formControlName="regPlace">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row">
+          <mat-form-field>
+            <mat-label>Место рождения</mat-label>
+            <input matInput placeholder="Место рождения" type="text" formControlName="birthPlace">
+          </mat-form-field>
+          <div class="h-gap"></div>
+          <mat-form-field>
+            <mat-label>Дата рождения</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="birthDay">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <mat-form-field>
+          <ngx-mat-file-input [formControl]="passportScanControl" placeholder="Скан"></ngx-mat-file-input>
+          <mat-icon matSuffix>folder</mat-icon>
+        </mat-form-field>
+      </form>
+    </div>
+
+  </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row">
+  <div fxFlex="auto"></div>
+  <button mat-button (click)="close()">Отмена</button>
+  <button mat-raised-button color="primary" [disabled]="!allFormsIsValid() || inProcess" (click)="uploadBin()">Добавить</button>
+</mat-dialog-actions>

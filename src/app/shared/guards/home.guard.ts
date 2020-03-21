@@ -7,13 +7,17 @@ import {UserService} from '../services/user.service';
   providedIn: 'root'
 })
 export class HomeGuard implements CanActivate {
-  constructor(private userService: UserService, private router: Router) { }
-
-  canActivate() {
-    if (!this.userService.jwtToken) {
-      this.router.navigate(['/auth']);
-    }
-    return true;
+  constructor(private userService: UserService, private router: Router) {
   }
 
+  canActivate(): Observable<boolean> {
+    return new Observable<boolean>(subscriber => {
+      this.userService.checkAdminAuth().subscribe(value => {
+        subscriber.next(true);
+      }, error => {
+        this.router.navigate(['/auth']);
+        subscriber.next(false);
+      })
+    })
+  }
 }

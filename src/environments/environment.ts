@@ -2,9 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+export const devOpts = {
+  forInet: false
+};
+
 export const environment = {
-  authApiUrl: 'http://mg.arkprojects.space:5100/api/1.0',
-  managementApiUrl: 'http://mg.arkprojects.space:5200/api/1.0',
+  authApiUrl: devOpts.forInet ? 'http://vdsina.arkprojects.space:5100/api/1.0' : 'http://mg.arkprojects.space:5100/api/1.0',
+  managementApiUrl: devOpts.forInet ? 'http://vdsina.arkprojects.space:5200/api/1.0' : 'http://mg.arkprojects.space:5200/api/1.0',
   production: false
 };
 

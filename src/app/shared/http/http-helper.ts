@@ -11,7 +11,7 @@ export class HttpHelper {
       return {errorType: EApiErrorTypes.InvalidData, error: validationErrors} as IApiError<string[]>;
     } else if (error.status === 500) {
       return {errorType: EApiErrorTypes.ServerInternalError, error: null} as IApiError<any>;
-    } else if (error.status === 401) {
+    } else if (error.status === 403) {
       if (isLogin) {
         return {errorType: EApiErrorTypes.NeedPassChallenge, error: null} as IApiError<any>;
       } else {

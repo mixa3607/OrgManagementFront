@@ -6,7 +6,6 @@ import {
   HttpInterceptor, HttpErrorResponse
 } from '@angular/common/http';
 import {BehaviorSubject, Observable, throwError} from 'rxjs';
-import {User} from '../models/classes/user';
 import {UserService} from '../services/user.service';
 import {catchError, filter, switchMap, take} from 'rxjs/operators';
 

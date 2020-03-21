@@ -19,14 +19,24 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexModule} from '@angular/flex-layout';
 import {HomeComponent} from './home/home.component';
 import {JwtInterceptor} from './shared/interceptors/jwt.interceptor';
-import { HeaderComponent } from './home/header/header.component';
+import {HeaderComponent} from './home/header/header.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
-import { EmployeesComponent } from './home/employees/employees.component';
+import {EmployeesComponent} from './home/employees/employees.component';
+import {AddEmployeeDialogComponent} from './home/employees/add-employee-dialog/add-employee-dialog.component';
+import {MaterialFileInputModule} from 'ngx-material-file-input';
+import {MatTableModule} from '@angular/material/table';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {IConfig, NgxMaskModule} from 'ngx-mask';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { EmployeeComponent } from './home/employees/show-employee-dialog/employee/employee.component';
+import { ShowEmployeeDialogComponent } from './home/employees/show-employee-dialog/show-employee-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -35,7 +45,11 @@ import { EmployeesComponent } from './home/employees/employees.component';
     PassChallengeDialogComponent,
     HomeComponent,
     HeaderComponent,
-    EmployeesComponent
+    EmployeesComponent,
+    AddEmployeeDialogComponent,
+    DeleteDialogComponent,
+    EmployeeComponent,
+    ShowEmployeeDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +72,13 @@ import { EmployeesComponent } from './home/employees/employees.component';
     MatSidenavModule,
     MatCheckboxModule,
     FormsModule,
-    MatListModule
+    MatListModule,
+    MaterialFileInputModule,
+    MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxMaskModule,
+    NgxMaskModule.forRoot()
   ],
   providers: [
     {

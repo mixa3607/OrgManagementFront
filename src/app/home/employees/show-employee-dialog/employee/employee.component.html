@@ -1,0 +1,45 @@
+
+  <div fxLayout="row">
+    <div class="main-info" fxLayout="column">
+      <div style="font-size: 0.9rem;">Основная информация</div>
+      <a *ngIf="!inEdit"><span>ФИО: </span>{{employee.initials}}</a>
+      <mat-form-field *ngIf="inEdit">
+        <mat-label>ФИО</mat-label>
+        <input matInput placeholder="ФИО" type="text" formControlName="initials">
+      </mat-form-field>
+      <a><span>Отдел: </span>{{employee.department}}</a>
+      <a><span>Должность: </span>{{employee.workingPosition}}</a>
+      <a><span>IPv4 адрес: </span>{{employee.ipv4Address}}</a>
+      <a><span>Доменное имя: </span>{{employee.domainNameEntry}}</a>
+      <a><span>Телефон: </span>{{employee.phoneNumber}}</a>
+      <a><span>Email: </span>{{employee.email}}</a>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="passport-info" fxLayout="column">
+      <div style="font-size: 0.9rem;">Паспорт</div>
+      <a><span>Номер: </span>{{employee.passport.serialNumber}}</a>
+      <a><span>Серия: </span>{{employee.passport.batch}}</a>
+      <a><span>Выдал: </span>{{employee.passport.issuer}}</a>
+      <a><span>Код подразделения: </span>{{employee.passport.issuerNum}}</a>
+      <a><span>Выдан: </span>{{employee.passport.issuedAt}}</a>
+      <a><span>Зарегестрирован: </span>{{employee.passport.regPlace}}</a>
+      <a><span>Родился: </span>{{employee.passport.birthDay}}</a>
+      <a><span>Скан: </span>
+        <button mat-icon-button>
+          <mat-icon>image</mat-icon>
+        </button>
+      </a>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="passport-info" fxLayout="column">
+      <div style="font-size: 0.9rem;">Паспорт</div>
+      <a><span>Номер: </span>{{employee.taxId.serialNumber}}</a>
+      <a><span>Скан: </span>
+        <button mat-icon-button>
+          <mat-icon>image</mat-icon>
+        </button>
+      </a>
+    </div>
+  </div>
+  <button mat-button>Закрыть</button>
+  <button mat-raised-button color="primary" (click)="inEdit = !inEdit">Изменить</button>

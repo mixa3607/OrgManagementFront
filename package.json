@@ -25,6 +25,8 @@
     "@types/jwt-decode": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "ngx-device-detector": "^1.4.0",
+    "ngx-mask": "^8.1.7",
+    "ngx-material-file-input": "^2.1.1",
     "rxjs": "~6.5.4",
     "ts-md5": "^1.2.7",
     "tslib": "^1.10.0",
