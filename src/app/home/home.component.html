@@ -1,37 +1,22 @@
 <mat-sidenav-container class="example-container" fxFill>
   <mat-sidenav #sidenav mode="push" [(opened)]="opened">
     <mat-list>
-      <div mat-subheader>Main</div>
-      <mat-list-item>
-        <button mat-button class="sectionBtn">Employees</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button class="sectionBtn">Certs</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button class="sectionBtn">Devices</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button class="sectionBtn">Software</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button class="sectionBtn">Device actions</button>
+      <div mat-subheader>Главное</div>
+      <mat-list-item *ngFor="let btn of mainButtons" [class.focused]="btn.route === router.url">
+        <button class="sectionBtn" mat-button (click)="navigateTo(btn.route)">{{btn.name}}</button>
       </mat-list-item>
 
       <mat-divider></mat-divider>
 
-      <div mat-subheader>Service tables</div>
-      <mat-list-item>
-        <button mat-button class="sectionBtn">Software types</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button class="sectionBtn">Device types</button>
+      <div mat-subheader>Сервисные таблицы</div>
+      <mat-list-item *ngFor="let btn of serviceButtons" [class.focused]="btn.route === router.url">
+        <button class="sectionBtn" mat-button (click)="navigateTo(btn.route)">{{btn.name}}</button>
       </mat-list-item>
     </mat-list>
   </mat-sidenav>
 
   <mat-sidenav-content fxLayout="column">
-    <app-header></app-header>
+    <app-header style="z-index: 10;"></app-header>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

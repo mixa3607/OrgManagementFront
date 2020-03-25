@@ -1,0 +1,10 @@
+<mat-toolbar class="toolbar">
+  <mat-toolbar-row fxLayout="row">
+    <span>Сертификаты</span>
+    <div fxFlex="auto"></div>
+    <button mat-icon-button>
+      <mat-icon>add_box</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<app-certs-table [certs]="certs" [showEmployeeName]="showEmployeeName"></app-certs-table>

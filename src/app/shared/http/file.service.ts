@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {IEmployee} from '../models/interfaces/i-employee';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {IFile, IUploadResult} from '../models/interfaces/i-file';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {HttpHelper} from './http-helper';
+import {catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,15 @@ export class FileService {
 
   constructor(private http: HttpClient) {
     this.managementApiUrl = environment.managementApiUrl;
+  }
+
+  get(id: number): Observable<IFile> {
+    return this.http.get<IFile>(this.managementApiUrl + '/file/info/' + id).pipe(
+      catchError(err => {
+        console.log('caught mapping error and rethrowing', err);
+        return throwError(HttpHelper.HandleHttpError(err));
+      })
+    );
   }
 
   uploadBin(fileToUpload: File): Observable<IUploadResult> {
@@ -30,13 +39,16 @@ export class FileService {
     return this.upload(fileToUpload, EFileType.CERT);
   }
 
-  private upload(fileToUpload: File, type: EFileType ): Observable<IUploadResult>{
+  private upload(fileToUpload: File, type: EFileType): Observable<IUploadResult> {
     const formData: FormData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
     const apiCall = this.http.put(this.managementApiUrl + '/file/' + type, formData);
     return new Observable<IUploadResult>(subscriber => {
       apiCall.subscribe(
-        (value: IUploadResult) => {subscriber.next(value); subscriber.complete()},
+        (value: IUploadResult) => {
+          subscriber.next(value);
+          subscriber.complete();
+        },
         (error: HttpErrorResponse) => subscriber.error(HttpHelper.HandleHttpError(error))
       );
     });
@@ -44,7 +56,7 @@ export class FileService {
 }
 
 
-enum EFileType{
+enum EFileType {
   BIN = 'bin',
   IMG = 'img',
   CERT = 'cert'

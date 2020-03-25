@@ -1,12 +1,14 @@
-mat-sidenav{
+mat-sidenav {
   width: 18rem;
 }
 
-.sectionBtn{
+.sectionBtn {
   width: 100%;
   text-align: left;
 }
 
-.focused{
+.focused {
   background-color: #d3d3d3;
 }
+
+/*# sourceMappingURL=home.component.css.map */

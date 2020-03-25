@@ -1,0 +1,18 @@
+.h-gap {
+  width: 0.8rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 12rem;
+}
+
+.form-header-text {
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+}
+
+/*# sourceMappingURL=add-employee-dialog.component.css.map */

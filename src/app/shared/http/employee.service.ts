@@ -6,7 +6,7 @@ import {IEmployee} from '../models/interfaces/i-employee';
 import {IGetAllResult} from '../models/interfaces/i-get-all-result';
 import {HttpHelper} from './http-helper';
 import {catchError, map} from 'rxjs/operators';
-import {EChangeActionType, IChangeAction} from '../models/i-act';
+import {IEmployeeUpdate} from '../models/update/i-employee-update';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ import {EChangeActionType, IChangeAction} from '../models/i-act';
 export class EmployeeService {
   managementApiUrl: string;
 
-  employeesSubject = new Subject<IChangeAction<IEmployee | number>>();
+  employeesSubject = new Subject<IEmployee[]>();
 
   constructor(private http: HttpClient) {
     this.managementApiUrl = environment.managementApiUrl;
@@ -27,9 +27,7 @@ export class EmployeeService {
         return throwError(HttpHelper.HandleHttpError(err));
       }),
       map(value => {
-        value.values.forEach(val =>
-          this.employeesSubject.next({value: val, type: EChangeActionType.ADD})
-        );
+        this.employeesSubject.next(value.values);
         return value.values;
       })
     );
@@ -40,18 +38,22 @@ export class EmployeeService {
       catchError(err => {
         console.log('caught mapping error and rethrowing', err);
         return throwError(HttpHelper.HandleHttpError(err));
+      }),
+      map(value => {
+        this.getAll().subscribe();
+        return value;
       })
     );
   }
 
   delEmployee(id: number): Observable<any> {
-    return this.http.delete(this.managementApiUrl + '/employee/' + id).pipe(
+    return this.http.delete(`${this.managementApiUrl}/employee/${id}`).pipe(
       catchError(err => {
         console.log('caught mapping error and rethrowing', err);
         return throwError(HttpHelper.HandleHttpError(err));
       }),
       map(value => {
-        this.employeesSubject.next({value: id, type: EChangeActionType.DEL});
+        this.getAll().subscribe();
         return value;
       })
     );
@@ -62,6 +64,19 @@ export class EmployeeService {
       catchError(err => {
         console.log('caught mapping error and rethrowing', err);
         return throwError(HttpHelper.HandleHttpError(err));
+      })
+    );
+  }
+
+  updateEmployee(id: number, upd: IEmployeeUpdate): Observable<IEmployee> {
+    return this.http.post<IEmployee>(this.managementApiUrl + '/employee/' + id, upd).pipe(
+      catchError(err => {
+        console.log('caught mapping error and rethrowing', err);
+        return throwError(HttpHelper.HandleHttpError(err));
+      }),
+      map(value => {
+        this.getAll().subscribe();
+        return value;
       })
     );
   }

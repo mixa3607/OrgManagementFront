@@ -26,16 +26,28 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
-import {EmployeesComponent} from './home/employees/employees.component';
-import {AddEmployeeDialogComponent} from './home/employees/add-employee-dialog/add-employee-dialog.component';
+import {EmployeesComponent} from './home/main-tables/employees/employees.component';
+import {AddEmployeeDialogComponent} from './home/main-tables/employees/add-employee-dialog/add-employee-dialog.component';
 import {MaterialFileInputModule} from 'ngx-material-file-input';
 import {MatTableModule} from '@angular/material/table';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import {IConfig, NgxMaskModule} from 'ngx-mask';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
-import { EmployeeComponent } from './home/employees/show-employee-dialog/employee/employee.component';
-import { ShowEmployeeDialogComponent } from './home/employees/show-employee-dialog/show-employee-dialog.component';
+import {NgxMaskModule} from 'ngx-mask';
+import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
+import {
+  ButtonWithHeaderComponent,
+  EmployeeComponent,
+  ValueWithHeaderComponent
+} from './home/main-tables/employees/show-employee-dialog/employee/employee.component';
+import {ShowEmployeeDialogComponent} from './home/main-tables/employees/show-employee-dialog/show-employee-dialog.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { CertsComponent } from './home/main-tables/certs/certs.component';
+import { CertsTableComponent } from './home/main-tables/certs-table/certs-table.component';
+import { DevicesTableComponent } from './home/main-tables/devices-table/devices-table.component';
+import { DevicesComponent } from './home/main-tables/devices/devices.component';
+import { TypesTableComponent } from './home/service-tables/types-table/types-table.component';
+import { DeviceTypesComponent } from './home/service-tables/device-types/device-types.component';
+import { DeviceActionTypesComponent } from './home/service-tables/device-action-types/device-action-types.component';
 
 
 @NgModule({
@@ -49,7 +61,16 @@ import { ShowEmployeeDialogComponent } from './home/employees/show-employee-dial
     AddEmployeeDialogComponent,
     DeleteDialogComponent,
     EmployeeComponent,
-    ShowEmployeeDialogComponent
+    ShowEmployeeDialogComponent,
+    ValueWithHeaderComponent,
+    ButtonWithHeaderComponent,
+    CertsComponent,
+    CertsTableComponent,
+    DevicesTableComponent,
+    DevicesComponent,
+    TypesTableComponent,
+    DeviceTypesComponent,
+    DeviceActionTypesComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +99,8 @@ import { ShowEmployeeDialogComponent } from './home/employees/show-employee-dial
     MatDatepickerModule,
     MatNativeDateModule,
     NgxMaskModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    MatExpansionModule
   ],
   providers: [
     {

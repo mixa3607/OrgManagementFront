@@ -1,8 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../shared/services/user.service';
-import validate = WebAssembly.validate;
 import {SidenavService} from '../shared/services/sidenav.service';
-import {MatSidenav, MatSidenavContainer} from '@angular/material/sidenav';
+import {MatSidenav} from '@angular/material/sidenav';
+import {Router} from '@angular/router';
+
+interface ActButton {
+  route: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -11,21 +16,34 @@ import {MatSidenav, MatSidenavContainer} from '@angular/material/sidenav';
 })
 export class HomeComponent implements OnInit {
   opened = false;
+  mainButtons: ActButton[] = [
+    {route: '/home/employee', name: 'Сотрудники'},
+    {route: '/home/device', name: 'Устройства'},
+    {route: '/home/cert', name: 'Сертификаты'},
+    {route: '/home/software', name: 'Софт'},
+    {route: '/home/', name: 'Действия с устройствами'},
+  ];
+  serviceButtons: ActButton[] = [
+    {route: '/home/deviceType', name: 'Типы устройств'},
+    {route: '/home/deviceActionType', name: 'Типы действий'}
+  ];
+
   @ViewChild('sidenav') sidenav: MatSidenav;
+
   constructor(public userService: UserService,
-              private sidenavService: SidenavService) { }
+              private sidenavService: SidenavService,
+              public router: Router) {
+  }
 
   ngOnInit(): void {
-    this.userService.checkAdminAuth().subscribe(value => {console.log(value)}, error => console.log(error));
+    this.userService.checkAdminAuth().subscribe(value => {
+      console.log(value);
+    }, error => console.log(error));
     this.sidenavService.mainSidenavSubject.subscribe(value => this.sidenav.toggle());
   }
 
-  logout():void{
-    this.userService.logout().subscribe(value => console.debug(value));
+  navigateTo(link: string): void {
+    this.router.navigateByUrl(link).then(() => this.opened = false);
   }
-
-
-
-
 
 }

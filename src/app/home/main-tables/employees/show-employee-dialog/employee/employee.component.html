@@ -1,0 +1,264 @@
+<div>
+  <div fxLayout="row">
+    <div class="main-info" fxLayout="column" >
+      <form fxLayout="column" [formGroup]="mainForm" class="mat-elevation-z2">
+        <div class="form-header-text" fxLayout="row">
+          <p>Основная информация</p>
+          <div fxFlex="auto"></div>
+          <button mat-icon-button *ngIf="!inEditMain" (click)="inEditMain = !inEditMain">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="inEditMain" [disabled]="!(this.mainForm.valid)" (click)="saveMainInfo()">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="inEditMain" (click)="inEditMain = !inEditMain">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+        <div>
+          <div class="entry">
+            <value-with-header *ngIf="!inEditMain" [value]="employee.name" header="Псевдоним"></value-with-header>
+            <mat-form-field *ngIf="inEditMain">
+              <mat-label>Псевдоним</mat-label>
+              <input matInput placeholder="Псевдоним" type="text" formControlName="name">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row" class="two-entry">
+          <div class="entry">
+            <value-with-header *ngIf="!inEditMain" [value]="employee.department" header="Отдел"></value-with-header>
+            <mat-form-field *ngIf="inEditMain">
+              <mat-label>Отдел</mat-label>
+              <input matInput placeholder="Отдел" type="text" formControlName="department">
+            </mat-form-field>
+          </div>
+          <div class="entry">
+            <value-with-header *ngIf="!inEditMain" [value]="employee.workingPosition"
+                               header="Должность"></value-with-header>
+            <mat-form-field *ngIf="inEditMain">
+              <mat-label>Должность</mat-label>
+              <input matInput placeholder="Должность" type="text" formControlName="workingPosition">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row" class="two-entry">
+          <div class="entry">
+            <value-with-header *ngIf="!inEditMain" [value]="employee.ipv4Address" header="IPv4 адрес"></value-with-header>
+            <mat-form-field *ngIf="inEditMain">
+              <mat-label>IPv4 адрес</mat-label>
+              <input [dropSpecialCharacters]="false" matInput mask="000.000.000.000" placeholder="IPv4 адрес" type="text"
+                     formControlName="ipv4Address">
+            </mat-form-field>
+          </div>
+
+          <div class="entry">
+            <value-with-header *ngIf="!inEditMain" [value]="employee.domainNameEntry"
+                               header="Доменное имя"></value-with-header>
+            <mat-form-field *ngIf="inEditMain">
+              <mat-label>Доменное имя</mat-label>
+              <input matInput placeholder="Доменное имя" type="text" formControlName="domainNameEntry">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row" class="two-entry">
+          <div class="entry">
+            <value-with-header *ngIf="!inEditMain" [value]="employee.phoneNumber" header="Телефон"></value-with-header>
+            <mat-form-field *ngIf="inEditMain">
+              <mat-label>Телефон</mat-label>
+              <input matInput placeholder="Телефон" type="text" formControlName="phoneNumber">
+            </mat-form-field>
+          </div>
+          <div class="entry">
+            <value-with-header *ngIf="!inEditMain" [value]="employee.email" header="Email"></value-with-header>
+            <mat-form-field *ngIf="inEditMain">
+              <mat-label>Email</mat-label>
+              <input matInput placeholder="Email" type="text" formControlName="email">
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+
+      <mat-divider></mat-divider>
+
+      <form [formGroup]="taxIdForm" fxLayout="column" class="mat-elevation-z2">
+        <div class="form-header-text" fxLayout="row">
+          <p>ИНН</p>
+          <div fxFlex="auto"></div>
+          <button mat-icon-button *ngIf="!inEditTaxId" (click)="inEditTaxId = !inEditTaxId">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="inEditTaxId" [disabled]="!(this.taxIdScanControl.valid && this.taxIdForm.valid)"
+                  (click)="saveTaxId()">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="inEditTaxId" (click)="inEditTaxId = !inEditTaxId">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+        <div fxLayout="row" class="two-entry">
+          <div class="entry">
+            <value-with-header *ngIf="!inEditTaxId" [value]="employee.taxId.serialNumber"
+                               header="Номер"></value-with-header>
+            <mat-form-field *ngIf="inEditTaxId">
+              <mat-label>Номер</mat-label>
+              <input matInput placeholder="Номер" type="text" formControlName="serialNumber">
+            </mat-form-field>
+          </div>
+          <div class="entry">
+            <button-with-header (buttonClick)="openTaxIdScan()" *ngIf="!inEditTaxId" header="Скан"
+                                matIconName="image"></button-with-header>
+            <mat-form-field class="half-width" *ngIf="inEditTaxId">
+              <ngx-mat-file-input [formControl]="taxIdScanControl" placeholder="Скан"></ngx-mat-file-input>
+              <mat-icon matSuffix>folder</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <mat-divider vertical></mat-divider>
+    <div class="passport-info" fxLayout="column">
+      <form [formGroup]="passportForm" fxLayout="column" class="mat-elevation-z2">
+        <div class="form-header-text" fxLayout="row">
+          <p>Паспорт</p>
+          <div fxFlex="auto"></div>
+          <button mat-icon-button *ngIf="!inEditPassport" (click)="inEditPassport = !inEditPassport">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="inEditPassport" (click)="savePassport()"
+                  [disabled]="!(this.passportScanControl.valid && this.passportForm.valid)">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="inEditPassport" (click)="inEditPassport = !inEditPassport">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+        <div>
+          <div class="entry">
+            <value-with-header *ngIf="!inEditPassport" [value]="employee.passport.initials"
+                               header="ФИО"></value-with-header>
+            <mat-form-field *ngIf="inEditPassport">
+              <mat-label>ФИО</mat-label>
+              <input matInput placeholder="ФИО" type="text" formControlName="initials">
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row" class="two-entry">
+          <div class="entry">
+            <value-with-header *ngIf="!inEditPassport" [value]="employee.passport.batch"
+                               header="Серия"></value-with-header>
+            <mat-form-field *ngIf="inEditPassport">
+              <mat-label>Серия</mat-label>
+              <input matInput mask="00 00" placeholder="Серия" type="text" formControlName="batch">
+            </mat-form-field>
+          </div>
+          <div class="entry">
+            <value-with-header *ngIf="!inEditPassport" [value]="employee.passport.serialNumber"
+                               header="Номер"></value-with-header>
+            <mat-form-field class="half-width" *ngIf="inEditPassport">
+              <mat-label>Номер</mat-label>
+              <input matInput mask="000000" placeholder="Номер" type="text" formControlName="serialNumber">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row" class="two-entry">
+          <div class="entry">
+            <value-with-header *ngIf="!inEditPassport" [value]="employee.passport.issuer"
+                               header="Кем выдан"></value-with-header>
+            <mat-form-field *ngIf="inEditPassport">
+              <mat-label>Кем выдан</mat-label>
+              <input matInput placeholder="Кем выдан" type="text" formControlName="issuer">
+            </mat-form-field>
+          </div>
+          <div class="entry">
+            <value-with-header *ngIf="!inEditPassport" [value]="employee.passport.issuerNum"
+                               header="Номер"></value-with-header>
+            <mat-form-field class="half-width" *ngIf="inEditPassport">
+              <mat-label>Код подразделения</mat-label>
+              <input matInput mask="000-000" placeholder="Код подразделения" type="text" formControlName="issuerNum">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row" class="two-entry">
+          <div class="entry">
+            <value-with-header *ngIf="!inEditPassport" [value]="employee.passport.issuedAt"
+                               header="Когда выдан"></value-with-header>
+            <mat-form-field *ngIf="inEditPassport">
+              <mat-label>Когда выдан</mat-label>
+              <input matInput [matDatepicker]="picker1" formControlName="issuedAt">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="entry">
+            <value-with-header *ngIf="!inEditPassport" [value]="employee.passport.regPlace"
+                               header="Место регистрации"></value-with-header>
+            <mat-form-field class="half-width" *ngIf="inEditPassport">
+              <mat-label>Место регистрации</mat-label>
+              <input matInput placeholder="Место регистрации" type="text" formControlName="regPlace">
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row" class="two-entry">
+          <div class="entry">
+            <value-with-header *ngIf="!inEditPassport" [value]="employee.passport.birthPlace"
+                               header="Место рождения"></value-with-header>
+            <mat-form-field *ngIf="inEditPassport">
+              <mat-label>Место рождения</mat-label>
+              <input matInput placeholder="Место рождения" type="text" formControlName="birthPlace">
+            </mat-form-field>
+          </div>
+          <div class="entry">
+            <value-with-header *ngIf="!inEditPassport" [value]="employee.passport.birthDay"
+                               header="Дата рождения"></value-with-header>
+            <mat-form-field class="half-width" *ngIf="inEditPassport">
+              <mat-label>Дата рождения</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="birthDay">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div>
+          <div class="entry">
+            <button-with-header (buttonClick)="openPassportScan()" *ngIf="!inEditPassport" header="Скан"
+                                matIconName="image"></button-with-header>
+            <mat-form-field class="half-width" *ngIf="inEditPassport">
+              <ngx-mat-file-input [formControl]="passportScanControl" placeholder="Скан"></ngx-mat-file-input>
+              <mat-icon matSuffix>folder</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+  <div style="width: 100%" class="mat-elevation-z2">
+    <mat-accordion [multi]="true">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Сертификаты
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-certs-table [showEmployeeName]="false" [certs]="employee.certs"></app-certs-table>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Устройства
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-devices-table [showEmployeeName]="false" [devices]="employee.devices"></app-devices-table>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
+

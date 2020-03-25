@@ -1,0 +1,20 @@
+<table mat-table [dataSource]="devices" style="width: 100%;">
+  <ng-container matColumnDef="employeeName">
+    <th mat-header-cell *matHeaderCellDef> Сотрудник</th>
+    <td mat-cell *matCellDef="let device"> {{device.employee.name}} </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Название</th>
+    <td mat-cell *matCellDef="let device"> {{device.name}} </td>
+  </ng-container>
+  <ng-container matColumnDef="invNumber">
+    <th mat-header-cell *matHeaderCellDef> Инв. Номер</th>
+    <td mat-cell *matCellDef="let device"> {{device.invNumber}} </td>
+  </ng-container>
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef> Тип</th>
+    <td mat-cell *matCellDef="let device"> {{deviceService.getType(device.typeId)|async}} </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns"></tr>
+</table>

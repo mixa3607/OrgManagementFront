@@ -1,0 +1,29 @@
+.entry {
+  width: auto;
+  margin-right: 0.6rem;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.two-entry {
+  .entry {
+    width: 50%;
+
+  }
+}
+
+form {
+  min-width: 24rem;
+  padding: .8rem;
+}
+
+.form-header-text {
+  //font-size: 0.8rem;
+  //margin-bottom: .6rem;
+  mat-icon{
+    height: 1.2rem;
+    font-size: 1.2rem;
+  }
+}

@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>
+  Сотрудник
+</h2>
+<mat-dialog-content>
+  <div *ngIf="employee" style="overflow: auto">
+    <app-employee [employee]="employee"></app-employee>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div fxFlex="auto"></div>
+  <button mat-raised-button mat-dialog-close>Закрыть</button>
+</mat-dialog-actions>
