@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Добавить тип</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <input matInput type="text" [formControl]="nameInputControl">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row">
+  <div fxFlex="auto"></div>
+  <button mat-raised-button (click)="close()">Отмена</button>
+  <button mat-raised-button color="primary" [disabled]="!nameInputControl.valid" (click)="add(nameInputControl.value)">Добавить</button>
+</mat-dialog-actions>

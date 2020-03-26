@@ -2,11 +2,12 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable, Subject, throwError} from 'rxjs';
-import {IEmployee} from '../models/interfaces/i-employee';
+import {ICert, IEmployee} from '../models/interfaces/i-employee';
 import {IGetAllResult} from '../models/interfaces/i-get-all-result';
 import {HttpHelper} from './http-helper';
 import {catchError, map} from 'rxjs/operators';
 import {IEmployeeUpdate} from '../models/update/i-employee-update';
+import {CertService} from './cert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class EmployeeService {
 
   employeesSubject = new Subject<IEmployee[]>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private certService: CertService) {
     this.managementApiUrl = environment.managementApiUrl;
   }
 
@@ -79,5 +81,23 @@ export class EmployeeService {
         return value;
       })
     );
+  }
+
+  search(query: string): Observable<IEmployee[]> {
+    return this.http.get<IEmployee[]>(this.managementApiUrl + '/employee/search', {
+      params: {query}
+    }).pipe(
+      catchError(err => {
+        console.log('caught mapping error and rethrowing', err);
+        return throwError(HttpHelper.HandleHttpError(err));
+      })
+    );
+  }
+
+  addCert(employeeId:number, cert:ICert):Observable<ICert>{
+    return this.http.post<ICert>(`${this.managementApiUrl}/employee/${employeeId}/cert`, cert).pipe(map(value => {
+      this.certService.getAll().subscribe();
+      return value;
+    }))
   }
 }

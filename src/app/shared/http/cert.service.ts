@@ -29,4 +29,16 @@ export class CertService {
         return value.values;
       }));
   }
+
+  del(id:number):Observable<any> {
+    return this.http.delete(`${this.managementApiUrl}/cert/${id}`).pipe(
+      catchError(err => {
+        console.log('caught mapping error and rethrowing', err);
+        return throwError(HttpHelper.HandleHttpError(err));
+      }),
+      map(value => {
+        this.getAll().subscribe();
+        return value;
+      }));
+  }
 }

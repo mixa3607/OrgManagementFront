@@ -78,4 +78,18 @@ export class DeviceService {
       return value;
     }));
   }
+
+  addType(name: string): Observable<any> {
+    return this.http.put<any>(`${this.managementApiUrl}/deviceType`, JSON.stringify(name), {
+      headers: {'Content-Type': 'application/json'}
+    }).pipe(
+      catchError(err => {
+        console.log('caught mapping error and rethrowing', err);
+        return throwError(HttpHelper.HandleHttpError(err));
+      }),
+      map(value => {
+        this.getAllTypes().subscribe();
+        return value;
+      }));
+  }
 }

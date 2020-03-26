@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {IFile, IUploadResult} from '../models/interfaces/i-file';
+import {ICertUploadResult, IFile, IUploadResult} from '../models/interfaces/i-file';
 import {Observable, throwError} from 'rxjs';
 import {HttpHelper} from './http-helper';
 import {catchError} from 'rxjs/operators';
@@ -35,8 +35,8 @@ export class FileService {
     return this.upload(fileToUpload, EFileType.IMG);
   }
 
-  uploadCert(fileToUpload: File): Observable<IUploadResult> {
-    return this.upload(fileToUpload, EFileType.CERT);
+  uploadCert(fileToUpload: File): Observable<ICertUploadResult> {
+    return this.upload(fileToUpload, EFileType.CERT) as Observable<ICertUploadResult>;
   }
 
   private upload(fileToUpload: File, type: EFileType): Observable<IUploadResult> {

@@ -48,6 +48,10 @@ import { DevicesComponent } from './home/main-tables/devices/devices.component';
 import { TypesTableComponent } from './home/service-tables/types-table/types-table.component';
 import { DeviceTypesComponent } from './home/service-tables/device-types/device-types.component';
 import { DeviceActionTypesComponent } from './home/service-tables/device-action-types/device-action-types.component';
+import { AddTypeDialogComponent } from './home/service-tables/add-type-dialog/add-type-dialog.component';
+import { AddCertComponent } from './home/main-tables/add-cert/add-cert.component';
+import {NgxMatSelectSearchModule} from 'ngx-mat-select-search';
+import { AddCertDialogComponent } from './home/main-tables/add-cert-dialog/add-cert-dialog.component';
 
 
 @NgModule({
@@ -70,7 +74,10 @@ import { DeviceActionTypesComponent } from './home/service-tables/device-action-
     DevicesComponent,
     TypesTableComponent,
     DeviceTypesComponent,
-    DeviceActionTypesComponent
+    DeviceActionTypesComponent,
+    AddTypeDialogComponent,
+    AddCertComponent,
+    AddCertDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +107,8 @@ import { DeviceActionTypesComponent } from './home/service-tables/device-action-
     MatNativeDateModule,
     NgxMaskModule,
     NgxMaskModule.forRoot(),
-    MatExpansionModule
+    MatExpansionModule,
+    NgxMatSelectSearchModule,
   ],
   providers: [
     {

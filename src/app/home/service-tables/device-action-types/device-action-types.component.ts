@@ -3,6 +3,7 @@ import {DeviceActionService} from '../../../shared/http/device-action.service';
 import {IType} from '../../../shared/models/interfaces/i-type';
 import {DeleteDialogComponent} from '../../../delete-dialog/delete-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import {AddTypeDialogComponent, IAddTypeData} from '../add-type-dialog/add-type-dialog.component';
 
 @Component({
   selector: 'app-device-action-types',
@@ -30,6 +31,13 @@ export class DeviceActionTypesComponent implements OnInit {
       if (value) {
         this.deviceActionService.delType(id).subscribe();
       }
+    });
+  }
+
+  add():void{
+    this.dialog.open(AddTypeDialogComponent, {
+      disableClose: false,
+      data: {addFunc: name => this.deviceActionService.addType(name)} as IAddTypeData
     });
   }
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IDevice} from '../../../shared/models/interfaces/i-employee';
 import {DeviceService} from '../../../shared/http/device.service';
 
@@ -8,9 +8,11 @@ import {DeviceService} from '../../../shared/http/device.service';
   styleUrls: ['./devices-table.component.scss']
 })
 export class DevicesTableComponent implements OnInit {
-  columns = ['name', 'invNumber', 'type'];
+  columns = ['name', 'invNumber', 'type', 'actions'];
   @Input() devices: IDevice[] = [];
   @Input() showEmployeeName;
+  @Output() onDelete = new EventEmitter<number>();
+  @Output() onOpen = new EventEmitter<number>();
 
   constructor(public deviceService: DeviceService) {
     deviceService.getAllTypes().subscribe();

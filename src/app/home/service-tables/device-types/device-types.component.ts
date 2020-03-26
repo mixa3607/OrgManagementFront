@@ -3,6 +3,7 @@ import {DeviceService} from '../../../shared/http/device.service';
 import {IType} from '../../../shared/models/interfaces/i-type';
 import {DeleteDialogComponent} from '../../../delete-dialog/delete-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import {AddTypeDialogComponent, IAddTypeData} from '../add-type-dialog/add-type-dialog.component';
 
 @Component({
   selector: 'app-device-types',
@@ -33,4 +34,10 @@ export class DeviceTypesComponent implements OnInit {
     });
   }
 
+  add():void{
+    this.dialog.open(AddTypeDialogComponent, {
+      disableClose: false,
+      data: {addFunc: name => this.deviceService.addType(name)} as IAddTypeData
+    });
+  }
 }

@@ -1,0 +1,65 @@
+<div class="container">
+  <form [formGroup]="certForm">
+    <div fxLayout="row">
+      <mat-form-field fxFlex="auto">
+        <mat-select placeholder="Сотрудник" [formControl]="employeesSelectControl">
+          <mat-option>
+            <ngx-mat-select-search [formControl]="searchCtrl" [searching]="searching" placeholderLabel="Псевдоним..."
+                                   noEntriesFoundLabel="'нет совпадений'" style="max-width: 15rem;"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let empl of employeesSubject | async" [value]="empl">
+            {{empl.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <mat-form-field fxFlex="auto">
+        <ngx-mat-file-input [formControl]="certFileControl" placeholder="Сертификат"></ngx-mat-file-input>
+        <mat-icon matSuffix>folder</mat-icon>
+      </mat-form-field>
+      <div class="h-gap"></div>
+      <button mat-button style="height: 2.5rem;" [disabled]="!certFileControl.valid" (click)="uploadCert()">Загрузить</button>
+    </div>
+
+    <div fxLayout="row">
+      <mat-form-field fxFlex="auto">
+        <ngx-mat-file-input [formControl]="certContainerFileControl" placeholder="Котейнер сертификата" #containerInput></ngx-mat-file-input>
+        <mat-icon matSuffix *ngIf="containerInput.empty">folder</mat-icon>
+        <button mat-icon-button matSuffix *ngIf="!containerInput.empty" (click)="containerInput.clear($event)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row">
+      <mat-form-field fxFlex="auto">
+        <mat-label>Название</mat-label>
+        <input matInput placeholder="Название" type="text" formControlName="name">
+      </mat-form-field>
+      <div class="h-gap"></div>
+      <mat-form-field fxFlex="auto">
+        <mat-label>Издатель</mat-label>
+        <input matInput placeholder="Издатель" type="text" formControlName="issuer">
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row">
+      <mat-form-field fxFlex="auto" >
+        <mat-label>С</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="notBefore">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+      <div class="h-gap"></div>
+      <mat-form-field fxFlex="auto">
+        <mat-label>По</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="notAfter">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<!--<button [disabled]="!allFormsIsValid()" (click)="add()">add</button>-->

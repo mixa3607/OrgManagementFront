@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ICert} from '../../../shared/models/interfaces/i-employee';
 
 @Component({
@@ -7,9 +7,10 @@ import {ICert} from '../../../shared/models/interfaces/i-employee';
   styleUrls: ['./certs-table.component.scss']
 })
 export class CertsTableComponent implements OnInit {
-  columns = ['name', 'notAfter', 'notBefore', 'issuer'];
+  columns = ['name', 'notAfter', 'notBefore', 'issuer', 'actions'];
   @Input() certs: ICert[] = [];
   @Input() showEmployeeName;
+  @Output() onDelete = new EventEmitter<number>();
   constructor() {
 
   }
