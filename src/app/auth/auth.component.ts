@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../shared/services/user.service';
+import {UserService} from '../shared/http/user.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import {MustMatch} from '../shared/validators/must-match.validator';
 import {EUserSessionState} from '../shared/models/euser-session-state.enum';
-import {IUser} from '../shared/models/interfaces/i-user';
+import {IAuthUser} from '../shared/models/interfaces/i-auth-user';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 import {PassChallengeDialogComponent} from './pass-challenge-dialog/pass-challenge-dialog.component';
@@ -50,7 +50,7 @@ export class AuthComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  openPassChallengeDialog(user: IUser): Observable<string> {
+  openPassChallengeDialog(user: IAuthUser): Observable<string> {
     const dialogRef = this.dialog.open(PassChallengeDialogComponent, {
       data: user, disableClose: true
     });
@@ -63,7 +63,7 @@ export class AuthComponent implements OnInit {
     });
   }
 
-  login(user: IUser): void {
+  login(user: IAuthUser): void {
     this.userService.login(user)
       .subscribe(retUser => {
         this.openSnackbar('Successful');
@@ -86,7 +86,7 @@ export class AuthComponent implements OnInit {
       });
   }
 
-  registry(user: IUser): void {
+  registry(user: IAuthUser): void {
     this.userService.registry(user)
       .subscribe((result: any) => {
         this.openPassChallengeDialog(user).subscribe(value => {

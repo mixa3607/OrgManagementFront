@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {ITaxIdUpdate} from '../models/update/i-employee-update';
-import {Observable, throwError} from 'rxjs';
-import {IPassport, ITaxId} from '../models/interfaces/i-employee';
-import {catchError} from 'rxjs/operators';
-import {HttpHelper} from './http-helper';
+import {Observable} from 'rxjs';
+import {ITaxIdUpdate} from '../models/update/i-tax-id-update';
+import {ITaxId} from '../models/detailed-models/i-tax-id';
+import {IPassport} from '../models/detailed-models/i-passport';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +17,10 @@ export class TaxIdService {
   }
 
   update(id: number, upd: ITaxIdUpdate): Observable<ITaxId> {
-    return this.http.post<IPassport>(this.managementApiUrl + '/taxId/' + id, upd).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        return throwError(HttpHelper.HandleHttpError(err));
-      })
-    );
+    return this.http.post<IPassport>(this.managementApiUrl + '/taxId/' + id, upd);
+  }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete(this.managementApiUrl + '/taxId/' + id);
   }
 }

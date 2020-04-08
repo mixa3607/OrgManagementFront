@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ICertUploadResult, IFile, IUploadResult} from '../models/interfaces/i-file';
-import {Observable, throwError} from 'rxjs';
-import {HttpHelper} from './http-helper';
-import {catchError} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +17,7 @@ export class FileService {
   }
 
   get(id: number): Observable<IFile> {
-    return this.http.get<IFile>(this.managementApiUrl + '/file/info/' + id).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        return throwError(HttpHelper.HandleHttpError(err));
-      })
-    );
+    return this.http.get<IFile>(this.managementApiUrl + '/file/info/' + id);
   }
 
   uploadBin(fileToUpload: File): Observable<IUploadResult> {
@@ -42,16 +35,13 @@ export class FileService {
   private upload(fileToUpload: File, type: EFileType): Observable<IUploadResult> {
     const formData: FormData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
-    const apiCall = this.http.put(this.managementApiUrl + '/file/' + type, formData);
-    return new Observable<IUploadResult>(subscriber => {
-      apiCall.subscribe(
-        (value: IUploadResult) => {
-          subscriber.next(value);
-          subscriber.complete();
-        },
-        (error: HttpErrorResponse) => subscriber.error(HttpHelper.HandleHttpError(error))
-      );
-    });
+    return this.http.post<IUploadResult>(this.managementApiUrl + '/file/' + type, formData,
+      {
+        headers: new HttpHeaders({
+          'Content-Type-Internal': 's',
+        })
+      }
+    );
   }
 }
 

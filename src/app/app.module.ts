@@ -49,9 +49,22 @@ import { TypesTableComponent } from './home/service-tables/types-table/types-tab
 import { DeviceTypesComponent } from './home/service-tables/device-types/device-types.component';
 import { DeviceActionTypesComponent } from './home/service-tables/device-action-types/device-action-types.component';
 import { AddTypeDialogComponent } from './home/service-tables/add-type-dialog/add-type-dialog.component';
-import { AddCertComponent } from './home/main-tables/add-cert/add-cert.component';
+import { AddCertComponent } from './home/main-tables/certs/add-cert/add-cert.component';
 import {NgxMatSelectSearchModule} from 'ngx-mat-select-search';
-import { AddCertDialogComponent } from './home/main-tables/add-cert-dialog/add-cert-dialog.component';
+import { AddCertDialogComponent } from './home/main-tables/certs/add-cert-dialog/add-cert-dialog.component';
+import { EmployeesTableComponent } from './home/main-tables/employees-table/employees-table.component';
+import {ErrorInterceptor} from './shared/interceptors/error.interceptor';
+import { AddDeviceComponent } from './home/main-tables/devices/add-device/add-device.component';
+import { AddDeviceDialogComponent } from './home/main-tables/devices/add-device-dialog/add-device-dialog.component';
+import { SoftwareTableComponent } from './home/main-tables/software-table/software-table.component';
+import { DeviceActionsTableComponent } from './home/main-tables/device-actions-table/device-actions-table.component';
+import { DeviceActionsComponent } from './home/main-tables/device-actions/device-actions.component';
+import { SoftwareComponent } from './home/main-tables/software/software.component';
+import { AddDeviceActionDialogComponent } from './home/main-tables/device-actions/add-device-action-dialog/add-device-action-dialog.component';
+import { AddSoftDialogComponent } from './home/main-tables/software/add-soft-dialog/add-soft-dialog.component';
+import { SoftwareTypesComponent } from './home/service-tables/software-types/software-types.component';
+import { AddSoftComponent } from './home/main-tables/software/add-soft/add-soft.component';
+import { AddDeviceActionComponent } from './home/main-tables/device-actions/add-device-action/add-device-action.component';
 
 
 @NgModule({
@@ -77,7 +90,19 @@ import { AddCertDialogComponent } from './home/main-tables/add-cert-dialog/add-c
     DeviceActionTypesComponent,
     AddTypeDialogComponent,
     AddCertComponent,
-    AddCertDialogComponent
+    AddCertDialogComponent,
+    EmployeesTableComponent,
+    AddDeviceComponent,
+    AddDeviceDialogComponent,
+    SoftwareTableComponent,
+    DeviceActionsTableComponent,
+    DeviceActionsComponent,
+    SoftwareComponent,
+    AddDeviceActionDialogComponent,
+    AddSoftDialogComponent,
+    SoftwareTypesComponent,
+    AddSoftComponent,
+    AddDeviceActionComponent
   ],
   imports: [
     BrowserModule,
@@ -114,6 +139,11 @@ import { AddCertDialogComponent } from './home/main-tables/add-cert-dialog/add-c
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     }
   ],

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IType} from '../../../shared/models/interfaces/i-type';
+import {IIdNamePair} from '../../../shared/models/interfaces/i-id-name-pair';
 
 @Component({
   selector: 'app-types-table',
@@ -7,7 +7,7 @@ import {IType} from '../../../shared/models/interfaces/i-type';
   styleUrls: ['./types-table.component.scss']
 })
 export class TypesTableComponent implements OnInit {
-  @Input() types: IType[] = [];
+  @Input() types: IIdNamePair[] = [];
   @Output() onDelete = new EventEmitter<number>();
   columns = ['id', 'name', 'actions'];
 

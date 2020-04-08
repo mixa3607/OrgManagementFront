@@ -1,43 +1,34 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject, throwError} from 'rxjs';
-import {ICert} from '../models/interfaces/i-employee';
+import {Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {IGetAllResult} from '../models/interfaces/i-get-all-result';
-import {catchError, map} from 'rxjs/operators';
-import {HttpHelper} from './http-helper';
+import {map} from 'rxjs/operators';
+import {ICertL} from '../models/list-models/i-cert-l';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CertService {
-  managementApiUrl: string;
-  certsSubject = new Subject<ICert[]>();
+  private readonly managementApiUrl: string;
+
+  public readonly certsChangedSubject = new Subject();
 
   constructor(private http: HttpClient) {
     this.managementApiUrl = environment.managementApiUrl;
   }
 
-  getAll(): Observable<ICert[]> {
-    return this.http.get<IGetAllResult<ICert>>(`${this.managementApiUrl}/cert`).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        return throwError(HttpHelper.HandleHttpError(err));
-      }),
-      map(value => {
-        this.certsSubject.next(value.values);
-        return value.values;
-      }));
+  getAll(offset = 0, count = 20): Observable<IGetAllResult<ICertL>> {
+    return this.http.get<IGetAllResult<ICertL>>(`${this.managementApiUrl}/cert`,
+      {
+        params: {offset: offset.toString(), count: count.toString()}
+      });
   }
 
-  del(id:number):Observable<any> {
+  del(id: number): Observable<any> {
     return this.http.delete(`${this.managementApiUrl}/cert/${id}`).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        return throwError(HttpHelper.HandleHttpError(err));
-      }),
       map(value => {
-        this.getAll().subscribe();
+        this.certsChangedSubject.next();
         return value;
       }));
   }

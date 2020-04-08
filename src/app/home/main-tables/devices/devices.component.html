@@ -1,8 +1,8 @@
 <mat-toolbar class="toolbar">
   <mat-toolbar-row fxLayout="row">
-    <span>Устройства</span>
+    <span>Устройства ({{devicesCount}})</span>
     <div fxFlex="auto"></div>
-    <button mat-icon-button>
+    <button mat-icon-button (click)="openAddDeviceDialog()">
       <mat-icon>add_box</mat-icon>
     </button>
   </mat-toolbar-row>

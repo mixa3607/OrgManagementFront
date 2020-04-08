@@ -1,7 +1,7 @@
 <table mat-table [dataSource]="devices" style="width: 100%;">
   <ng-container matColumnDef="employeeName">
     <th mat-header-cell *matHeaderCellDef> Сотрудник</th>
-    <td mat-cell *matCellDef="let device"> {{device.employee.name}} </td>
+    <td mat-cell *matCellDef="let device"> {{device.employeeName}} </td>
   </ng-container>
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Название</th>

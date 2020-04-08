@@ -1,82 +1,68 @@
 import {Injectable} from '@angular/core';
-import {Observable, of, Subject, throwError} from 'rxjs';
-import {IType} from '../models/interfaces/i-type';
+import {Observable, Subject} from 'rxjs';
+import {IIdNamePair} from '../models/interfaces/i-id-name-pair';
 import {IGetAllResult} from '../models/interfaces/i-get-all-result';
-import {catchError, map, switchMap, take} from 'rxjs/operators';
-import {HttpHelper} from './http-helper';
-import {IDevice} from '../models/interfaces/i-employee';
+import {map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import {IDeviceActionL} from '../models/list-models/i-device-action-l';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceActionService {
-  managementApiUrl: string;
-  deviceActionsSubject = new Subject<IDevice[]>();
+  private readonly managementApiUrl: string;
 
   private inTypesGetting = false;
   private typeGettingSubject = new Subject<any>();
-  private types = new Map<number, IType>();
-  typesSubject = new Subject<IType[]>();
+  private types = new Map<number, IIdNamePair>();
+
+  public readonly typesChangeSubject = new Subject();
+  public readonly deviceActionsChangeSubject = new Subject();
 
   constructor(private http: HttpClient) {
     this.managementApiUrl = environment.managementApiUrl;
   }
 
-  getAllTypes(): Observable<IType[]> {
-    this.inTypesGetting = true;
-    return this.http.get<IGetAllResult<IType>>(`${this.managementApiUrl}/deviceActionType`).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        this.inTypesGetting = false;
-        return throwError(HttpHelper.HandleHttpError(err));
-      }),
+  getAll(offset = 0, count = 20): Observable<IGetAllResult<IDeviceActionL>> {
+    return this.http.get<IGetAllResult<IDeviceActionL>>(`${this.managementApiUrl}/deviceAction`,
+      {
+        params: {offset: offset.toString(), count: count.toString()}
+      });
+  }
+
+  del(id: number): Observable<any> {
+    return this.http.delete(`${this.managementApiUrl}/deviceAction/${id}`).pipe(
       map(value => {
-        this.typesSubject.next(value.values);
-        value.values.forEach(x => this.types.set(x.id, x));
-        this.inTypesGetting = false;
-        this.typeGettingSubject.next(null);
-        return value.values;
+        this.deviceActionsChangeSubject.next();
+        return value;
       }));
   }
 
-  getType(id: number): Observable<string> {
-    if (this.inTypesGetting) {
-      return this.typeGettingSubject.pipe(
-        take(1),
-        switchMap(value => this.types.get(id).name));
-    } else if (this.types.size === 0) {
-      return this.getAllTypes().pipe(map(value => {
-        return this.types.get(id)?.name;
+
+  getAllTypes(): Observable<IGetAllResult<IIdNamePair>> {
+    this.inTypesGetting = true;
+    return this.http.get<IGetAllResult<IIdNamePair>>(`${this.managementApiUrl}/deviceActionType`).pipe(
+      map(value => {
+        value.values.forEach(x => this.types.set(x.id, x));
+        this.inTypesGetting = false;
+        this.typeGettingSubject.next(null);
+        return value;
       }));
-    } else {
-      return of(this.types.get(id).name);
-    }
   }
 
   delType(id: number): Observable<any> {
     return this.http.delete<any>(`${this.managementApiUrl}/deviceActionType/${id}`).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        return throwError(HttpHelper.HandleHttpError(err));
-      }),
       map(value => {
-        this.getAllTypes().subscribe();
+        this.typesChangeSubject.next();
         return value;
       }));
   }
 
   addType(name: string): Observable<any> {
-    return this.http.put<any>(`${this.managementApiUrl}/deviceActionType`, JSON.stringify(name), {
-      headers: {'Content-Type': 'application/json'}
-    }).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        return throwError(HttpHelper.HandleHttpError(err));
-      }),
+    return this.http.post<any>(`${this.managementApiUrl}/deviceActionType`, JSON.stringify(name)).pipe(
       map(value => {
-        this.getAllTypes().subscribe();
+        this.typesChangeSubject.next();
         return value;
       }));
   }

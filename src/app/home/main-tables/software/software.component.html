@@ -1,0 +1,10 @@
+<mat-toolbar class="toolbar">
+  <mat-toolbar-row fxLayout="row">
+    <span>ПО ({{softwareCount}})</span>
+    <div fxFlex="auto"></div>
+    <button mat-icon-button (click)="openAddSoftDialog()">
+      <mat-icon>add_box</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<app-software-table [software]="software" [showDeviceName]="true" (onDelete)="del($event)"></app-software-table>

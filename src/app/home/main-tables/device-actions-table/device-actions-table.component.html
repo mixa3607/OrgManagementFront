@@ -1,0 +1,35 @@
+<table mat-table [dataSource]="deviceActions" style="width: 100%">
+  <ng-container matColumnDef="deviceName">
+    <th mat-header-cell *matHeaderCellDef> Устройство</th>
+    <td mat-cell *matCellDef="let action"> {{action.deviceName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="receiptDate">
+    <th mat-header-cell *matHeaderCellDef> Дата сдачи</th>
+    <td mat-cell *matCellDef="let action"> {{action.receiptDate}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="returnDate">
+    <th mat-header-cell *matHeaderCellDef> Дата возврата</th>
+    <td mat-cell *matCellDef="let action"> {{action.returnDate}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef> Тип</th>
+    <td mat-cell *matCellDef="let action"> {{action.typeId}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions" stickyEnd>
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let action" style="width: 1rem">
+      <div fxLayout="row">
+        <button mat-icon-button (click)="onDelete.emit(action.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns"></tr>
+</table>

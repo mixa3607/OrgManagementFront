@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {IEmployee} from '../../../../shared/models/interfaces/i-employee';
+import {IEmployeeDt} from '../../../../shared/models/detailed-models/i-employee-dt';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {EmployeeService} from '../../../../shared/http/employee.service';
 
@@ -10,7 +10,7 @@ import {EmployeeService} from '../../../../shared/http/employee.service';
 })
 export class ShowEmployeeDialogComponent implements OnInit {
 
-  employee: IEmployee;
+  employee: IEmployeeDt;
 
   constructor(public dialogRef: MatDialogRef<ShowEmployeeDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public employeeId: number,

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
-import { Observable } from 'rxjs';
-import {UserService} from '../services/user.service';
+import {Injectable} from '@angular/core';
+import {CanActivate, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {UserService} from '../http/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +15,9 @@ export class HomeGuard implements CanActivate {
       this.userService.checkAdminAuth().subscribe(value => {
         subscriber.next(true);
       }, error => {
-        this.router.navigate(['/auth']);
+        // this.router.navigate(['/auth']);
         subscriber.next(false);
-      })
-    })
+      });
+    });
   }
 }

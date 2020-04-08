@@ -7,7 +7,9 @@ import {FileInput} from 'ngx-material-file-input';
 import {forkJoin} from 'rxjs';
 import {SnackbarService} from '../../../../shared/services/snackbar.service';
 import {EmployeeService} from '../../../../shared/http/employee.service';
-import {IEmployee, IPassport, ITaxId} from '../../../../shared/models/interfaces/i-employee';
+import {IEmployeeDt} from '../../../../shared/models/detailed-models/i-employee-dt';
+import {ITaxId} from '../../../../shared/models/detailed-models/i-tax-id';
+import {IPassport} from '../../../../shared/models/detailed-models/i-passport';
 
 @Component({
   selector: 'app-add-employee-dialog',
@@ -77,7 +79,7 @@ export class AddEmployeeDialogComponent implements OnInit {
     forkJoin([this.fileService.uploadImg(taxIdFile), this.fileService.uploadImg(passportFile)])
       .subscribe(([taxIdUpl, passportUpl]) => {
           this.inProcess = true;
-          const employee = this.mainForm.value as IEmployee;
+          const employee = this.mainForm.value as IEmployeeDt;
           employee.passport = this.passportForm.value as IPassport;
           employee.passport.scanFileId = passportUpl.id;
           employee.taxId = this.taxIdForm.value as ITaxId;

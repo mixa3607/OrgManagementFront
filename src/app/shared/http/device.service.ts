@@ -1,55 +1,85 @@
 import {Injectable} from '@angular/core';
-import {Observable, of, Subject, throwError} from 'rxjs';
-import {IDevice} from '../models/interfaces/i-employee';
+import {Observable, of, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {IGetAllResult} from '../models/interfaces/i-get-all-result';
-import {catchError, map, switchMap, take} from 'rxjs/operators';
-import {HttpHelper} from './http-helper';
-import {IType} from '../models/interfaces/i-type';
+import {map, switchMap, take} from 'rxjs/operators';
+import {IIdNamePair} from '../models/interfaces/i-id-name-pair';
+import {IDeviceL} from '../models/list-models/i-device-l';
+import {IEmployeeDt} from '../models/detailed-models/i-employee-dt';
+import {IDeviceDt} from '../models/detailed-models/i-device-dt';
+import {ISoftwareL} from '../models/list-models/i-software-l';
+import {ISoftwareDt} from '../models/detailed-models/i-software-dt';
+import {IDeviceActionDt} from '../models/detailed-models/i-device-action-dt';
+import {SoftwareService} from './software.service';
+import {DeviceActionService} from './device-action.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceService {
-  managementApiUrl: string;
-  devicesSubject = new Subject<IDevice[]>();
+  private readonly managementApiUrl: string;
 
   private inTypesGetting = false;
   private typeGettingSubject = new Subject<any>();
-  private types = new Map<number, IType>();
-  typesSubject = new Subject<IType[]>();
+  private types = new Map<number, IIdNamePair>();
 
-  constructor(private http: HttpClient) {
+  public readonly typesChangeSubject = new Subject();
+  public readonly devicesChangeSubject = new Subject();
+
+  constructor(private http: HttpClient, private softwareService: SoftwareService, private deviceActionService: DeviceActionService) {
     this.managementApiUrl = environment.managementApiUrl;
   }
 
-  getAll(): Observable<IDevice[]> {
-    return this.http.get<IGetAllResult<IDevice>>(`${this.managementApiUrl}/device`).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        return throwError(HttpHelper.HandleHttpError(err));
-      }),
-      map(value => {
-        this.devicesSubject.next(value.values);
-        return value.values;
-      }));
+  getAll(offset = 0, count = 20): Observable<IGetAllResult<IDeviceL>> {
+    return this.http.get<IGetAllResult<IDeviceL>>(`${this.managementApiUrl}/device`,
+      {
+        params: {offset: offset.toString(), count: count.toString()}
+      });
   }
 
-  getAllTypes(): Observable<IType[]> {
-    this.inTypesGetting = true;
-    return this.http.get<IGetAllResult<IType>>(`${this.managementApiUrl}/deviceType`).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        this.inTypesGetting = false;
-        return throwError(HttpHelper.HandleHttpError(err));
-      }),
+  delDevice(id: number): Observable<any> {
+    return this.http.delete(`${this.managementApiUrl}/device/${id}`).pipe(
       map(value => {
-        this.typesSubject.next(value.values);
+        this.devicesChangeSubject.next();
+        return value;
+      })
+    );
+  }
+
+  addSoft(deviceId: number, soft: ISoftwareDt): Observable<ISoftwareDt> {
+    return this.http.post<ISoftwareDt>(this.managementApiUrl + '/device/' + deviceId + '/software', soft).pipe(
+      map(value => {
+        this.softwareService.softwareChangeSubject.next();
+        return value;
+      })
+    );
+  }
+
+  addAction(deviceId: number, soft: IDeviceActionDt): Observable<IDeviceDt> {
+    return this.http.post<IDeviceDt>(this.managementApiUrl + '/device/' + deviceId + '/action', soft).pipe(
+      map(value => {
+        this.deviceActionService.deviceActionsChangeSubject.next();
+        return value;
+      })
+    );
+  }
+
+  search(query: string, offset = 0, count = 10): Observable<IIdNamePair[]> {
+    return this.http.get<IEmployeeDt[]>(this.managementApiUrl + '/device/search', {
+      params: {query, offset: offset.toString(), count: count.toString()}
+    });
+  }
+
+  getAllTypes(offset = 0, count = 20): Observable<IGetAllResult<IIdNamePair>> {
+    return this.http.get<IGetAllResult<IIdNamePair>>(`${this.managementApiUrl}/deviceType`,
+      {
+        params: {offset: offset.toString(), count: count.toString()}
+      }).pipe(
+      map(value => {
         value.values.forEach(x => this.types.set(x.id, x));
         this.inTypesGetting = false;
-        this.typeGettingSubject.next(null);
-        return value.values;
+        return value;
       }));
   }
 
@@ -69,26 +99,16 @@ export class DeviceService {
 
   delType(id: number): Observable<any> {
     return this.http.delete<any>(`${this.managementApiUrl}/deviceType/${id}`).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        return throwError(HttpHelper.HandleHttpError(err));
-      }),
       map(value => {
-      this.getAllTypes().subscribe();
-      return value;
-    }));
+        this.typesChangeSubject.next();
+        return value;
+      }));
   }
 
   addType(name: string): Observable<any> {
-    return this.http.put<any>(`${this.managementApiUrl}/deviceType`, JSON.stringify(name), {
-      headers: {'Content-Type': 'application/json'}
-    }).pipe(
-      catchError(err => {
-        console.log('caught mapping error and rethrowing', err);
-        return throwError(HttpHelper.HandleHttpError(err));
-      }),
+    return this.http.post<any>(`${this.managementApiUrl}/deviceType`, JSON.stringify(name)).pipe(
       map(value => {
-        this.getAllTypes().subscribe();
+        this.typesChangeSubject.next();
         return value;
       }));
   }

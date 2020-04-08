@@ -1,0 +1,10 @@
+<mat-toolbar class="toolbar">
+  <mat-toolbar-row fxLayout="row">
+    <span>Действия с устройствами ({{deviceActionsCount}})</span>
+    <div fxFlex="auto"></div>
+    <button mat-icon-button (click)="openAddActionDialog()">
+      <mat-icon>add_box</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<app-device-actions-table [deviceActions]="deviceActions" [showDeviceName]="true" (onDelete)="del($event)"></app-device-actions-table>

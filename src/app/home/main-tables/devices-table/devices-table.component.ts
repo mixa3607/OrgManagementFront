@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IDevice} from '../../../shared/models/interfaces/i-employee';
 import {DeviceService} from '../../../shared/http/device.service';
+import {IDeviceL} from '../../../shared/models/list-models/i-device-l';
 
 @Component({
   selector: 'app-devices-table',
@@ -9,7 +9,7 @@ import {DeviceService} from '../../../shared/http/device.service';
 })
 export class DevicesTableComponent implements OnInit {
   columns = ['name', 'invNumber', 'type', 'actions'];
-  @Input() devices: IDevice[] = [];
+  @Input() devices: IDeviceL[] = [];
   @Input() showEmployeeName;
   @Output() onDelete = new EventEmitter<number>();
   @Output() onOpen = new EventEmitter<number>();

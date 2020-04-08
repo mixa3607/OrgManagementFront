@@ -1,17 +1,19 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IEmployee} from '../../../../../shared/models/interfaces/i-employee';
+import {IEmployeeDt} from '../../../../../shared/models/detailed-models/i-employee-dt';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FileService} from '../../../../../shared/http/file.service';
 import {SnackbarService} from '../../../../../shared/services/snackbar.service';
 import {EmployeeService} from '../../../../../shared/http/employee.service';
-import {IEmployeeUpdate, IPassportUpdate, ITaxIdUpdate} from '../../../../../shared/models/update/i-employee-update';
+import {IEmployeeUpdate} from '../../../../../shared/models/update/i-employee-update';
 import {FileInput} from 'ngx-material-file-input';
 import {PassportService} from '../../../../../shared/http/passport.service';
 import {Observable, of} from 'rxjs';
 import {IUploadResult} from '../../../../../shared/models/interfaces/i-file';
 import {TaxIdService} from '../../../../../shared/http/tax-id.service';
 import {environment} from '../../../../../../environments/environment';
+import {IPassportUpdate} from '../../../../../shared/models/update/i-passport-update';
+import {ITaxIdUpdate} from '../../../../../shared/models/update/i-tax-id-update';
 
 @Component({
   selector: 'app-employee',
@@ -20,7 +22,7 @@ import {environment} from '../../../../../../environments/environment';
 })
 export class EmployeeComponent implements OnInit {
 
-  @Input() employee: IEmployee;
+  @Input() employee: IEmployeeDt;
   inEditMain = false;
   inEditPassport = false;
   inEditTaxId = false;
@@ -87,7 +89,7 @@ export class EmployeeComponent implements OnInit {
       && this.taxIdForm.valid;
   }
 
-  setPassportFormValues(employee: IEmployee): void {
+  setPassportFormValues(employee: IEmployeeDt): void {
     this.passportForm.setValue({
       initials: employee.passport.initials,
       batch: employee.passport.batch,
@@ -101,7 +103,7 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  setMainFormValues(employee: IEmployee): void {
+  setMainFormValues(employee: IEmployeeDt): void {
     this.mainForm.setValue({
       name: employee.name,
       department: employee.department,
@@ -113,7 +115,7 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  setTaxIdFormValues(employee: IEmployee): void {
+  setTaxIdFormValues(employee: IEmployeeDt): void {
     this.taxIdForm.setValue({
       serialNumber: employee.taxId.serialNumber,
     });

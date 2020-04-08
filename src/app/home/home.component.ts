@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {UserService} from '../shared/services/user.service';
+import {UserService} from '../shared/http/user.service';
 import {SidenavService} from '../shared/services/sidenav.service';
 import {MatSidenav} from '@angular/material/sidenav';
 import {Router} from '@angular/router';
@@ -21,11 +21,12 @@ export class HomeComponent implements OnInit {
     {route: '/home/device', name: 'Устройства'},
     {route: '/home/cert', name: 'Сертификаты'},
     {route: '/home/software', name: 'Софт'},
-    {route: '/home/', name: 'Действия с устройствами'},
+    {route: '/home/deviceAction', name: 'Действия с устройствами'},
   ];
   serviceButtons: ActButton[] = [
     {route: '/home/deviceType', name: 'Типы устройств'},
-    {route: '/home/deviceActionType', name: 'Типы действий'}
+    {route: '/home/deviceActionType', name: 'Типы действий'},
+    {route: '/home/softwareType', name: 'Типы ПО'}
   ];
 
   @ViewChild('sidenav') sidenav: MatSidenav;

@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {IUser} from '../../shared/models/interfaces/i-user';
+import {IAuthUser} from '../../shared/models/interfaces/i-auth-user';
 import {IApiError} from '../../shared/models/interfaces/i-api-error';
 import {EApiErrorTypes} from '../../shared/models/eapi-error-types.enum';
-import {UserService} from '../../shared/services/user.service';
+import {UserService} from '../../shared/http/user.service';
 
 @Component({
   selector: 'app-pass-challenge-dialog',
@@ -16,7 +16,7 @@ export class PassChallengeDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<PassChallengeDialogComponent>,
     private userService: UserService,
     private snackBar: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) public user: IUser
+    @Inject(MAT_DIALOG_DATA) public user: IAuthUser
   ) {
   }
 

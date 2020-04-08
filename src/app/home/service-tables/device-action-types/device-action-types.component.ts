@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DeviceActionService} from '../../../shared/http/device-action.service';
-import {IType} from '../../../shared/models/interfaces/i-type';
+import {IIdNamePair} from '../../../shared/models/interfaces/i-id-name-pair';
 import {DeleteDialogComponent} from '../../../delete-dialog/delete-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {AddTypeDialogComponent, IAddTypeData} from '../add-type-dialog/add-type-dialog.component';
@@ -11,18 +11,26 @@ import {AddTypeDialogComponent, IAddTypeData} from '../add-type-dialog/add-type-
   styleUrls: ['./device-action-types.component.scss']
 })
 export class DeviceActionTypesComponent implements OnInit {
-  deviceActionTypes: IType[] = [];
-  constructor(private deviceActionService:DeviceActionService,
-              private dialog:MatDialog) {
+  deviceActionTypes: IIdNamePair[] = [];
+  deviceActionTypesCount = 0;
+
+  constructor(private deviceActionService: DeviceActionService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
-    this.deviceActionService.typesSubject.subscribe(value => this.deviceActionTypes = value);
-    this.deviceActionService.getAllTypes().subscribe();
+    this.updTypes();
+    this.deviceActionService.typesChangeSubject.subscribe(value => this.updTypes());
   }
 
+  updTypes(): void {
+    this.deviceActionService.getAllTypes().subscribe(value => {
+      this.deviceActionTypes = value.values;
+      this.deviceActionTypesCount = value.totalCount;
+    });
+  }
 
-  delete(id:number):void{
+  delete(id: number): void {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       disableClose: false,
       data: 'Удалить тип?'
@@ -34,7 +42,7 @@ export class DeviceActionTypesComponent implements OnInit {
     });
   }
 
-  add():void{
+  add(): void {
     this.dialog.open(AddTypeDialogComponent, {
       disableClose: false,
       data: {addFunc: name => this.deviceActionService.addType(name)} as IAddTypeData

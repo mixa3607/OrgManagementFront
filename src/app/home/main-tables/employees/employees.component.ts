@@ -1,12 +1,12 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import {AddEmployeeDialogComponent} from './add-employee-dialog/add-employee-dialog.component';
-import {IEmployee} from '../../../shared/models/interfaces/i-employee';
 import {EmployeeService} from '../../../shared/http/employee.service';
 import {DeleteDialogComponent} from '../../../delete-dialog/delete-dialog.component';
 import {ShowEmployeeDialogComponent} from './show-employee-dialog/show-employee-dialog.component';
+import {IEmployeeL} from '../../../shared/models/list-models/i-employee-l';
 
 @Component({
   selector: 'app-employees',
@@ -14,9 +14,8 @@ import {ShowEmployeeDialogComponent} from './show-employee-dialog/show-employee-
   styleUrls: ['./employees.component.scss']
 })
 export class EmployeesComponent implements OnInit {
-
-  employees: IEmployee[] = [];
-  // employeesMap = new Map<number, IEmployee>(); //
+  employees: IEmployeeL[] = [];
+  employeesCount = 0;
 
   constructor(private snackBar: MatSnackBar,
               private dialog: MatDialog,
@@ -24,10 +23,15 @@ export class EmployeesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.employeeService.employeesSubject.subscribe(value => {
-      this.employees = value;
+    this.updEmployees();
+    this.employeeService.employeesChangedSubject.subscribe(() => this.updEmployees());
+  }
+
+  updEmployees() {
+    this.employeeService.getAll().subscribe(value => {
+      this.employees = value.values;
+      this.employeesCount = value.totalCount;
     });
-    this.employeeService.getAll().subscribe();
   }
 
   openAddEmployeeDialog(): Observable<string> {
@@ -38,7 +42,7 @@ export class EmployeesComponent implements OnInit {
     return dialogRef.afterClosed() as Observable<string>;
   }
 
-  openDelEmployeeDialog(id: number):void {
+  openDelEmployeeDialog(id: number): void {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       disableClose: false,
       data: 'Удалить сотрудника?'
@@ -50,7 +54,7 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  openShowEmployeeDialog(id:number):void{
+  openShowEmployeeDialog(id: number): void {
     this.dialog.open(ShowEmployeeDialogComponent, {
       disableClose: false,
       data: id
