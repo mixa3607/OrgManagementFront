@@ -1,12 +1,11 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {IIdNamePair} from '../../../../shared/models/interfaces/i-id-name-pair';
-import {EmployeeService} from '../../../../shared/http/employee.service';
 import {DeviceService} from '../../../../shared/http/device.service';
 import {Observable, ReplaySubject, Subject} from 'rxjs';
 import {debounceTime, filter, switchMap, takeUntil, tap} from 'rxjs/operators';
-import {SoftwareComponent} from '../software.component';
 import {SoftwareService} from '../../../../shared/http/software.service';
+import {SoftwareTypeService} from '../../../../shared/http/software-type.service';
 
 @Component({
   selector: 'app-add-soft',
@@ -29,10 +28,11 @@ export class AddSoftComponent implements OnInit {
   public searching = false;
   protected _onDestroy = new Subject<void>();
 
-  constructor(private softwareService: SoftwareService,
+  constructor(private softwareTypeService: SoftwareTypeService,
+              private softwareService: SoftwareService,
               private deviceService: DeviceService,
               private formBuilder: FormBuilder) {
-    softwareService.getAllTypes().subscribe(value => this.types = value.values);
+    softwareTypeService.getAll().subscribe(value => this.types = value);
     this.softForm = formBuilder.group({
       name: ['', [Validators.required]],
       code: ['', [Validators.required]],
@@ -72,7 +72,7 @@ export class AddSoftComponent implements OnInit {
 
   add(): Observable<any> {
     const formVal = this.softForm.value as any;
-    return this.deviceService.addSoft(formVal.deviceId, formVal);
+    return this.softwareService.add(formVal);
   }
 
 }

@@ -26,7 +26,9 @@ export class HomeComponent implements OnInit {
   serviceButtons: ActButton[] = [
     {route: '/home/deviceType', name: 'Типы устройств'},
     {route: '/home/deviceActionType', name: 'Типы действий'},
-    {route: '/home/softwareType', name: 'Типы ПО'}
+    {route: '/home/softwareType', name: 'Типы ПО'},
+    {route: '/home/workingPositionAc', name: 'Автодополнение должности'},
+    {route: '/home/departmentAc', name: 'Автодополнение отдела'}
   ];
 
   @ViewChild('sidenav') sidenav: MatSidenav;

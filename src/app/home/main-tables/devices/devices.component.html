@@ -7,4 +7,4 @@
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
-<app-devices-table [devices]="devices" [showEmployeeName]="showEmployeeName"></app-devices-table>
+<app-devices-table [devices]="devices" [showEmployeeName]="showEmployeeName" (onOpen)="openShowDeviceDialog($event)" (onDelete)="openDelDeviceDialog($event)"></app-devices-table>

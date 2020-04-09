@@ -65,6 +65,11 @@ import { AddSoftDialogComponent } from './home/main-tables/software/add-soft-dia
 import { SoftwareTypesComponent } from './home/service-tables/software-types/software-types.component';
 import { AddSoftComponent } from './home/main-tables/software/add-soft/add-soft.component';
 import { AddDeviceActionComponent } from './home/main-tables/device-actions/add-device-action/add-device-action.component';
+import { WorkingPositionAutocompleteComponent } from './home/service-tables/working-position-autocomplete/working-position-autocomplete.component';
+import { DepartmentAutocompleteComponent } from './home/service-tables/department-autocomplete/department-autocomplete.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { ShowDeviceDialogComponent } from './home/main-tables/devices/show-device-dialog/show-device-dialog.component';
+import { DeviceComponent } from './home/main-tables/devices/show-device-dialog/device/device.component';
 
 
 @NgModule({
@@ -102,7 +107,11 @@ import { AddDeviceActionComponent } from './home/main-tables/device-actions/add-
     AddSoftDialogComponent,
     SoftwareTypesComponent,
     AddSoftComponent,
-    AddDeviceActionComponent
+    AddDeviceActionComponent,
+    WorkingPositionAutocompleteComponent,
+    DepartmentAutocompleteComponent,
+    ShowDeviceDialogComponent,
+    DeviceComponent
   ],
   imports: [
     BrowserModule,
@@ -134,6 +143,7 @@ import { AddDeviceActionComponent } from './home/main-tables/device-actions/add-
     NgxMaskModule.forRoot(),
     MatExpansionModule,
     NgxMatSelectSearchModule,
+    MatAutocompleteModule,
   ],
   providers: [
     {

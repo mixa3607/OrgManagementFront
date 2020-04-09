@@ -14,12 +14,22 @@
         <div fxLayout="row">
           <mat-form-field class="half-width">
             <mat-label>Отдел</mat-label>
-            <input matInput placeholder="Отдел" type="text" formControlName="department">
+            <input matInput placeholder="Отдел" type="text" formControlName="department" [matAutocomplete]="departmentAc">
+            <mat-autocomplete #departmentAc="matAutocomplete">
+              <mat-option *ngFor="let option of departmentOpts" [value]="option.name">
+                {{option.name}}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
           <div class="h-gap"></div>
           <mat-form-field class="half-width">
             <mat-label>Должность</mat-label>
-            <input matInput placeholder="Должность" type="text" formControlName="workingPosition">
+            <input matInput placeholder="Должность" type="text" formControlName="workingPosition" [matAutocomplete]="workingPositionAc">
+            <mat-autocomplete #workingPositionAc="matAutocomplete">
+              <mat-option *ngFor="let option of workingPositionOpts" [value]="option.name">
+                {{option.name}}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
         </div>
 

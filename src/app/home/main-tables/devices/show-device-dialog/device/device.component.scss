@@ -1,0 +1,15 @@
+.entry {
+  width: auto;
+  margin-right: 0.6rem;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.two-entry {
+  .entry {
+    width: 50%;
+
+  }
+}

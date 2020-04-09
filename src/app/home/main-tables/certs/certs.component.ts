@@ -23,7 +23,7 @@ export class CertsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCerts();
-    this.certService.certsChangedSubject.subscribe(() => this.getCerts());
+    this.certService.changeObs.subscribe(() => this.getCerts());
   }
 
   getCerts(): void {
@@ -46,7 +46,7 @@ export class CertsComponent implements OnInit {
       data: 'Удалить сертификат?'
     }).afterClosed().subscribe(value => {
       if (value) {
-        this.certService.del(id).subscribe(() => {
+        this.certService.delete(id).subscribe(() => {
           this.snackbarService.openSnackBar('Сертификат успешно удалён');
         }, error => {
           this.snackbarService.openSnackBar('Ошибка удаления сертификата');

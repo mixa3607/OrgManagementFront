@@ -6,6 +6,7 @@ import {EmployeeService} from '../../../../shared/http/employee.service';
 import {DeviceService} from '../../../../shared/http/device.service';
 import {debounceTime, filter, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {DeviceActionService} from '../../../../shared/http/device-action.service';
+import {DeviceActionTypeService} from '../../../../shared/http/device-action-type.service';
 
 @Component({
   selector: 'app-add-device-action',
@@ -16,22 +17,21 @@ export class AddDeviceActionComponent implements OnInit {
   @Output() get isValid(): boolean {
     return this.allFormsIsValid();
   };
-
   @Input() deviceId: number;
 
   public actionForm: FormGroup;
   public types: IIdNamePair[] = [];
 
-  // public deviceSelectControl = new FormControl('', [Validators.required]);
   public searchCtrl: FormControl = new FormControl();
   public devicesSubject = new ReplaySubject<IIdNamePair[]>(1);
   public searching = false;
   protected _onDestroy = new Subject<void>();
 
-  constructor(private deviceActionService: DeviceActionService,
+  constructor(private deviceActionTypeService: DeviceActionTypeService,
               private deviceService: DeviceService,
+              private deviceActionService: DeviceActionService,
               private formBuilder: FormBuilder) {
-    deviceActionService.getAllTypes().subscribe(value => this.types = value.values);
+    deviceActionTypeService.getAll().subscribe(value => this.types = value);
     this.actionForm = formBuilder.group({
       note: ['', [Validators.required]],
       receiptDate: ['', [Validators.required]],
@@ -72,6 +72,6 @@ export class AddDeviceActionComponent implements OnInit {
 
   add(): Observable<any> {
     const formVal = this.actionForm.value as any;
-    return this.deviceService.addAction(formVal.deviceId, formVal);
+    return this.deviceActionService.add(formVal);
   }
 }

@@ -22,7 +22,7 @@ export class SoftwareComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSoft();
-    this.softwareService.softwareChangeSubject.subscribe(() => this.getSoft());
+    this.softwareService.changeObs.subscribe(() => this.getSoft());
   }
 
   getSoft(): void {
@@ -45,7 +45,7 @@ export class SoftwareComponent implements OnInit {
       data: 'Удалить ПО?'
     }).afterClosed().subscribe(value => {
       if (value) {
-        this.softwareService.del(id).subscribe(() => {
+        this.softwareService.delete(id).subscribe(() => {
           this.snackbarService.openSnackBar('ПО успешно удалено');
         }, error => {
           this.snackbarService.openSnackBar('Ошибка удаления ПО');

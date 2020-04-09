@@ -12,6 +12,8 @@ import {DeviceActionTypesComponent} from './home/service-tables/device-action-ty
 import {SoftwareTypesComponent} from './home/service-tables/software-types/software-types.component';
 import {SoftwareComponent} from './home/main-tables/software/software.component';
 import {DeviceActionsComponent} from './home/main-tables/device-actions/device-actions.component';
+import {WorkingPositionAutocompleteComponent} from './home/service-tables/working-position-autocomplete/working-position-autocomplete.component';
+import {DepartmentAutocompleteComponent} from './home/service-tables/department-autocomplete/department-autocomplete.component';
 
 
 const routes: Routes = [
@@ -32,7 +34,9 @@ const routes: Routes = [
       {path: 'deviceAction', component: DeviceActionsComponent},
       {path: 'deviceType', component: DeviceTypesComponent},
       {path: 'deviceActionType', component: DeviceActionTypesComponent},
-      {path: 'softwareType', component: SoftwareTypesComponent}
+      {path: 'softwareType', component: SoftwareTypesComponent},
+      {path: 'workingPositionAc', component: WorkingPositionAutocompleteComponent},
+      {path: 'departmentAc', component: DepartmentAutocompleteComponent},
     ]
   },
   {path: '**', redirectTo: '/auth'}];

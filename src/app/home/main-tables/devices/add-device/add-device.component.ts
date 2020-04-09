@@ -7,6 +7,7 @@ import {debounceTime, filter, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {EmployeeService} from '../../../../shared/http/employee.service';
 import {DeviceService} from '../../../../shared/http/device.service';
 import {IDeviceDt} from '../../../../shared/models/detailed-models/i-device-dt';
+import {DeviceTypeService} from '../../../../shared/http/device-type.service';
 
 @Component({
   selector: 'app-add-device',
@@ -35,8 +36,9 @@ export class AddDeviceComponent implements OnInit {
 
   constructor(private employeeService: EmployeeService,
               private deviceService: DeviceService,
+              private deviceTypeService: DeviceTypeService,
               private formBuilder: FormBuilder) {
-    deviceService.getAllTypes().subscribe(value => this.types = value.values);
+    deviceTypeService.getAll().subscribe(value => this.types = value);
     this.deviceForm = formBuilder.group({
       name: ['', [Validators.required]],
       invNumber: ['', [Validators.required]],
@@ -76,6 +78,6 @@ export class AddDeviceComponent implements OnInit {
 
   add(): Observable<any> {
     const formVal = this.deviceForm.value as any;
-    return this.employeeService.addDevice(formVal.employeeId, formVal);
+    return this.deviceService.add(formVal);
   }
 }

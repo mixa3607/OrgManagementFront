@@ -9,21 +9,9 @@ import {EmployeeService} from '../../../../shared/http/employee.service';
   styleUrls: ['./show-employee-dialog.component.scss']
 })
 export class ShowEmployeeDialogComponent implements OnInit {
-
-  employee: IEmployeeDt;
-
-  constructor(public dialogRef: MatDialogRef<ShowEmployeeDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public employeeId: number,
-              private employeeService: EmployeeService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public employeeId: number) {
   }
 
   ngOnInit(): void {
-    this.employeeService.getEmployee(this.employeeId).subscribe(value => {
-      this.employee = value;
-    });
-  }
-
-  close(accept = false): void {
-    this.dialogRef.close(accept);
   }
 }

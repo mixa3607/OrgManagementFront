@@ -6,12 +6,10 @@ import {IEmployeeDt} from '../models/detailed-models/i-employee-dt';
 import {IGetAllResult} from '../models/interfaces/i-get-all-result';
 import {map, switchMap, take} from 'rxjs/operators';
 import {IEmployeeUpdate} from '../models/update/i-employee-update';
-import {CertService} from './cert.service';
-import {ICertDt} from '../models/detailed-models/i-cert-dt';
 import {IEmployeeL} from '../models/list-models/i-employee-l';
 import {IIdNamePair} from '../models/interfaces/i-id-name-pair';
-import {IDeviceDt} from '../models/detailed-models/i-device-dt';
-import {DeviceService} from './device.service';
+import {IDeviceL} from '../models/list-models/i-device-l';
+import {ICertL} from '../models/list-models/i-cert-l';
 
 @Injectable({
   providedIn: 'root'
@@ -26,20 +24,18 @@ export class EmployeeService {
 
   public readonly employeesChangedSubject = new Subject();
 
-  constructor(private http: HttpClient,
-              private certService: CertService,
-              private deviceService:DeviceService) {
+  constructor(private http: HttpClient) {
     this.managementApiUrl = environment.managementApiUrl;
   }
 
   getAll(offset = 0, count = 20): Observable<IGetAllResult<IEmployeeL>> {
-    return this.http.get<IGetAllResult<IEmployeeL>>(this.managementApiUrl + '/employee', {
+    return this.http.get<IGetAllResult<IEmployeeL>>(`${this.managementApiUrl}/employee`, {
       params: {offset: offset.toString(), count: count.toString()}
     });
   }
 
-  addEmployee(employee: IEmployeeDt): Observable<IEmployeeDt> {
-    return this.http.post<IEmployeeDt>(this.managementApiUrl + '/employee', employee).pipe(
+  add(employee: IEmployeeDt): Observable<IEmployeeDt> {
+    return this.http.post<IEmployeeDt>(`${this.managementApiUrl}/employee`, employee).pipe(
       map(value => {
         this.employeesChangedSubject.next();
         return value;
@@ -47,7 +43,7 @@ export class EmployeeService {
     );
   }
 
-  delEmployee(id: number): Observable<any> {
+  del(id: number): Observable<any> {
     return this.http.delete(`${this.managementApiUrl}/employee/${id}`).pipe(
       map(value => {
         this.employeesChangedSubject.next();
@@ -56,7 +52,7 @@ export class EmployeeService {
     );
   }
 
-  getEmployee(id: number): Observable<IEmployeeDt> {
+  get(id: number): Observable<IEmployeeDt> {
     const empl = this.employeeCache.get(id);
     if (empl) {
       return of(empl);
@@ -69,13 +65,13 @@ export class EmployeeService {
       } else {
         return this.getEmployeeSubject.pipe(
           take(1),
-          switchMap(() => this.getEmployee(id))
+          switchMap(() => this.get(id))
         );
       }
     } else {
       this.gettingEmployeeId = id;
       this.inGetEmployee = true;
-      return this.http.get<IEmployeeDt>(this.managementApiUrl + '/employee/' + id).pipe(map(value => {
+      return this.http.get<IEmployeeDt>(`${this.managementApiUrl}/employee/${id}`).pipe(map(value => {
         this.employeeCache.set(value.id, value);
         this.inGetEmployee = false;
         this.getEmployeeSubject.next(value);
@@ -84,8 +80,8 @@ export class EmployeeService {
     }
   }
 
-  updateEmployee(id: number, upd: IEmployeeUpdate): Observable<IEmployeeDt> {
-    return this.http.put<IEmployeeDt>(this.managementApiUrl + '/employee/' + id, upd).pipe(
+  update(id: number, upd: IEmployeeUpdate): Observable<IEmployeeDt> {
+    return this.http.put<IEmployeeDt>(`${this.managementApiUrl}/employee/${id}`, upd).pipe(
       map(value => {
         this.employeesChangedSubject.next();
         return value;
@@ -94,24 +90,20 @@ export class EmployeeService {
   }
 
   search(query: string, offset = 0, count = 10): Observable<IIdNamePair[]> {
-    return this.http.get<IEmployeeDt[]>(this.managementApiUrl + '/employee/search', {
+    return this.http.get<IEmployeeDt[]>(`${this.managementApiUrl}/employee/search`, {
       params: {query, offset: offset.toString(), count: count.toString()}
     });
   }
 
-  addCert(employeeId: number, cert: ICertDt): Observable<ICertDt> {
-    return this.http.post<ICertDt>(`${this.managementApiUrl}/employee/${employeeId}/cert`, cert).pipe(
-      map(value => {
-        this.certService.certsChangedSubject.next();
-        return value;
-      }));
+  getDevices(id: number, offset = 0, count = 20): Observable<IGetAllResult<IDeviceL>> {
+    return this.http.get<IGetAllResult<IDeviceL>>(`${this.managementApiUrl}/employee/${id}/device`, {
+      params: {offset: offset.toString(), count: count.toString()}
+    });
   }
 
-  addDevice(employeeId: number, device: IDeviceDt): Observable<IDeviceDt> {
-    return this.http.post<IDeviceDt>(`${this.managementApiUrl}/employee/${employeeId}/device`, device).pipe(
-      map(value => {
-        this.deviceService.devicesChangeSubject.next();
-        return value;
-      }));
+  getCerts(id: number, offset = 0, count = 20): Observable<IGetAllResult<ICertL>> {
+    return this.http.get<IGetAllResult<ICertL>>(`${this.managementApiUrl}/employee/${id}/cert`, {
+      params: {offset: offset.toString(), count: count.toString()}
+    });
   }
 }

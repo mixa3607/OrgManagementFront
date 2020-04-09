@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ISoftwareL} from '../../../shared/models/list-models/i-software-l';
+import {SoftwareTypeService} from '../../../shared/http/software-type.service';
 
 @Component({
   selector: 'app-software-table',
@@ -11,8 +12,7 @@ export class SoftwareTableComponent implements OnInit {
   @Input() software: ISoftwareL[] = [];
   @Input() showDeviceName;
   @Output() onDelete = new EventEmitter<number>();
-  constructor() {
-
+  constructor(public softwareTypeService: SoftwareTypeService) {
   }
 
   ngOnInit(): void {

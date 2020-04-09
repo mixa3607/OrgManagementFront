@@ -10,6 +10,10 @@ import {EmployeeService} from '../../../../shared/http/employee.service';
 import {IEmployeeDt} from '../../../../shared/models/detailed-models/i-employee-dt';
 import {ITaxId} from '../../../../shared/models/detailed-models/i-tax-id';
 import {IPassport} from '../../../../shared/models/detailed-models/i-passport';
+import {DepartmentAutocompleteService} from '../../../../shared/http/department-autocomplete.service';
+import {WorkingPositionAutocompleteService} from '../../../../shared/http/working-position-autocomplete.service';
+import {map, startWith} from 'rxjs/operators';
+import {IIdNamePair} from '../../../../shared/models/interfaces/i-id-name-pair';
 
 @Component({
   selector: 'app-add-employee-dialog',
@@ -26,7 +30,12 @@ export class AddEmployeeDialogComponent implements OnInit {
 
   inProcess = false;
 
+  departmentOpts: IIdNamePair[];
+  workingPositionOpts: IIdNamePair[];
+
   constructor(public dialogRef: MatDialogRef<AddEmployeeDialogComponent>,
+              private departmentAutocompleteService: DepartmentAutocompleteService,
+              private workingPositionAutocompleteService: WorkingPositionAutocompleteService,
               private snackBar: MatSnackBar,
               private formBuilder: FormBuilder,
               private fileService: FileService,
@@ -62,6 +71,20 @@ export class AddEmployeeDialogComponent implements OnInit {
       serialNumber: ['', [Validators.required]],
       // taxIdScan: ['', [Validators.required]]
     });
+
+    this.departmentAutocompleteService.getAll().subscribe(ac => {
+      this.mainForm.controls.department.valueChanges.pipe(startWith(''), map(value => {
+        const filterValue = value.toLowerCase();
+        this.departmentOpts = ac.filter(option => option.name.toLowerCase().includes(filterValue));
+      })).subscribe();
+    });
+
+    this.workingPositionAutocompleteService.getAll().subscribe(ac => {
+      this.mainForm.controls.workingPosition.valueChanges.pipe(startWith(''), map(value => {
+        const filterValue = value.toLowerCase();
+        this.workingPositionOpts = ac.filter(option => option.name.toLowerCase().includes(filterValue));
+      })).subscribe();
+    });
   }
 
   allFormsIsValid(): boolean {
@@ -84,8 +107,10 @@ export class AddEmployeeDialogComponent implements OnInit {
           employee.passport.scanFileId = passportUpl.id;
           employee.taxId = this.taxIdForm.value as ITaxId;
           employee.taxId.scanFileId = taxIdUpl.id;
-          this.employeeService.addEmployee(employee).subscribe(() => {
-            this.snackbarService.openSnackBar('Employee add');
+          this.employeeService.add(employee).subscribe(() => {
+            this.snackbarService.openSnackBar('Сотрудник добавлен');
+            this.workingPositionAutocompleteService.flush();
+            this.departmentAutocompleteService.flush();
             this.dialogRef.close();
           }, error => {
             console.log('Error:', error);

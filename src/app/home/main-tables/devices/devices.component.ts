@@ -3,6 +3,9 @@ import {DeviceService} from '../../../shared/http/device.service';
 import {IDeviceL} from '../../../shared/models/list-models/i-device-l';
 import {MatDialog} from '@angular/material/dialog';
 import {AddDeviceDialogComponent} from './add-device-dialog/add-device-dialog.component';
+import {ShowEmployeeDialogComponent} from '../employees/show-employee-dialog/show-employee-dialog.component';
+import {ShowDeviceDialogComponent} from './show-device-dialog/show-device-dialog.component';
+import {DeleteDialogComponent} from '../../../delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-devices',
@@ -19,7 +22,7 @@ export class DevicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.updDevices();
-    this.deviceService.devicesChangeSubject.subscribe(() => this.updDevices());
+    this.deviceService.changeObs.subscribe(() => this.updDevices());
   }
 
   updDevices(): void {
@@ -33,6 +36,25 @@ export class DevicesComponent implements OnInit {
     this.dialog.open(AddDeviceDialogComponent, {
       disableClose: false,
       data: null
+    });
+  }
+
+  openShowDeviceDialog(id: number): void {
+    this.dialog.open(ShowDeviceDialogComponent, {
+      disableClose: false,
+      data: id
+    });
+  }
+
+  openDelDeviceDialog(id: number): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      disableClose: false,
+      data: 'Удалить устройство?'
+    });
+    dialogRef.afterClosed().subscribe(value => {
+      if (value) {
+        this.deviceService.delete(id).subscribe();
+      }
     });
   }
 }

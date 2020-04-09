@@ -49,7 +49,7 @@ export class EmployeesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(value => {
       if (value) {
-        this.delEmployee(id);
+        this.employeeService.del(id).subscribe();
       }
     });
   }
@@ -59,10 +59,6 @@ export class EmployeesComponent implements OnInit {
       disableClose: false,
       data: id
     });
-  }
-
-  delEmployee(id: number): void {
-    this.employeeService.delEmployee(id).subscribe();
   }
 }
 

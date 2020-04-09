@@ -1,0 +1,40 @@
+<div style="width: min-content; min-width: 45rem">
+<div fxLayout="column">
+  <div class="form-header-text" fxLayout="row">
+    <p>Основная информация</p>
+    <div fxFlex="auto"></div>
+  </div>
+  <div fxLayout="row">
+    <div class="entry">
+      <value-with-header [value]="device.name" header="Название"></value-with-header>
+    </div>
+    <div class="entry">
+      <value-with-header [value]="(deviceTypeService.get(device.typeId)|async).name" header="Тип"></value-with-header>
+    </div>
+    <div class="entry">
+      <value-with-header [value]="device.invNumber" header="Номер"></value-with-header>
+    </div>
+  </div>
+
+</div>
+  <div style="width: 100%" class="mat-elevation-z2">
+    <mat-accordion [multi]="true">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Действия
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-device-actions-table [showDeviceName]="false" [deviceActions]="deviceActions"></app-device-actions-table>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            ПО
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-software-table [showDeviceName]="false" [software]="software"></app-software-table>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

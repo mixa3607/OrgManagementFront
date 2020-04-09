@@ -4,6 +4,7 @@ import {IIdNamePair} from '../../../shared/models/interfaces/i-id-name-pair';
 import {DeleteDialogComponent} from '../../../delete-dialog/delete-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {AddTypeDialogComponent, IAddTypeData} from '../add-type-dialog/add-type-dialog.component';
+import {DeviceActionTypeService} from '../../../shared/http/device-action-type.service';
 
 @Component({
   selector: 'app-device-action-types',
@@ -14,19 +15,19 @@ export class DeviceActionTypesComponent implements OnInit {
   deviceActionTypes: IIdNamePair[] = [];
   deviceActionTypesCount = 0;
 
-  constructor(private deviceActionService: DeviceActionService,
+  constructor(private deviceActionTypeService: DeviceActionTypeService,
               private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
     this.updTypes();
-    this.deviceActionService.typesChangeSubject.subscribe(value => this.updTypes());
+    this.deviceActionTypeService.changeObs.subscribe(value => this.updTypes());
   }
 
   updTypes(): void {
-    this.deviceActionService.getAllTypes().subscribe(value => {
-      this.deviceActionTypes = value.values;
-      this.deviceActionTypesCount = value.totalCount;
+    this.deviceActionTypeService.getAll().subscribe(value => {
+      this.deviceActionTypes = value;
+      this.deviceActionTypesCount = value.length;
     });
   }
 
@@ -37,7 +38,7 @@ export class DeviceActionTypesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(value => {
       if (value) {
-        this.deviceActionService.delType(id).subscribe();
+        this.deviceActionTypeService.delete(id).subscribe();
       }
     });
   }
@@ -45,7 +46,7 @@ export class DeviceActionTypesComponent implements OnInit {
   add(): void {
     this.dialog.open(AddTypeDialogComponent, {
       disableClose: false,
-      data: {addFunc: name => this.deviceActionService.addType(name)} as IAddTypeData
+      data: {addFunc: name => this.deviceActionTypeService.add(name)} as IAddTypeData
     });
   }
 }

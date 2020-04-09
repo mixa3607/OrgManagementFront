@@ -14,6 +14,8 @@ import {TaxIdService} from '../../../../../shared/http/tax-id.service';
 import {environment} from '../../../../../../environments/environment';
 import {IPassportUpdate} from '../../../../../shared/models/update/i-passport-update';
 import {ITaxIdUpdate} from '../../../../../shared/models/update/i-tax-id-update';
+import {ICertL} from '../../../../../shared/models/list-models/i-cert-l';
+import {IDeviceL} from '../../../../../shared/models/list-models/i-device-l';
 
 @Component({
   selector: 'app-employee',
@@ -21,8 +23,11 @@ import {ITaxIdUpdate} from '../../../../../shared/models/update/i-tax-id-update'
   styleUrls: ['./employee.component.scss']
 })
 export class EmployeeComponent implements OnInit {
+  @Input() employeeId: number;
 
-  @Input() employee: IEmployeeDt;
+  public employee: IEmployeeDt;
+  public certs: ICertL[] = [];
+  public devices: IDeviceL[] = [];
   inEditMain = false;
   inEditPassport = false;
   inEditTaxId = false;
@@ -46,6 +51,15 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.employeeService.get(this.employeeId).subscribe(value => {
+      this.employee = value;
+      this.setMainFormValues(this.employee);
+      this.setPassportFormValues(this.employee);
+      this.setTaxIdFormValues(this.employee);
+    });
+    this.employeeService.getCerts(this.employeeId).subscribe(value => this.certs = value.values);
+    this.employeeService.getDevices(this.employeeId).subscribe(value => this.devices = value.values);
+
     this.passportScanControl = this.formBuilder.control('none', [Validators.required]);
     this.taxIdScanControl = this.formBuilder.control('none', [Validators.required]);
     this.mainForm = this.formBuilder.group({
@@ -73,10 +87,6 @@ export class EmployeeComponent implements OnInit {
       serialNumber: ['', [Validators.required]],
       // taxIdScan: ['', [Validators.required]]
     });
-
-    this.setMainFormValues(this.employee);
-    this.setPassportFormValues(this.employee);
-    this.setTaxIdFormValues(this.employee);
   }
 
 
@@ -121,21 +131,23 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  openTaxIdScan():void{
+  openTaxIdScan(): void {
     this.openImage(this.employee.taxId.scanFileId);
   }
-  openPassportScan():void{
+
+  openPassportScan(): void {
     this.openImage(this.employee.passport.scanFileId);
   }
+
   openImage(id: number): void {
     this.fileService.get(id).subscribe(value => {
-      window.open(environment.managementApiUrl + '/file/' + value.md5Hash, 'Image','width=largeImage.stylewidth,height=largeImage.style.height,resizable=1');
-    })
+      window.open(environment.managementApiUrl + '/file/' + value.md5Hash, 'Image', 'width=largeImage.stylewidth,height=largeImage.style.height,resizable=1');
+    });
   }
 
   saveMainInfo(): void {
     const formValues = this.mainForm.value as IEmployeeUpdate;
-    this.employeeService.updateEmployee(this.employee.id, formValues).subscribe(value => {
+    this.employeeService.update(this.employee.id, formValues).subscribe(value => {
       this.snackbarService.openSnackBar('Данные обновлены');
       this.inEditMain = false;
       this.employee = value;
@@ -211,7 +223,8 @@ export class ButtonWithHeaderComponent {
   @Input() matIconName: string;
   @Input() header: string;
   @Output() buttonClick = new EventEmitter<any>();
-  click(event: any){
+
+  click(event: any) {
     this.buttonClick.emit(event);
   }
 }

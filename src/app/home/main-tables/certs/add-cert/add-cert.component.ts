@@ -10,6 +10,7 @@ import {IUploadResult} from '../../../../shared/models/interfaces/i-file';
 import {ICertDt} from '../../../../shared/models/detailed-models/i-cert-dt';
 import {IIdNamePair} from '../../../../shared/models/interfaces/i-id-name-pair';
 import {IEmployeeDt} from '../../../../shared/models/detailed-models/i-employee-dt';
+import {CertService} from '../../../../shared/http/cert.service';
 
 @Component({
   selector: 'app-add-cert',
@@ -39,9 +40,10 @@ export class AddCertComponent implements OnInit, OnDestroy {
   public searching = false;
   protected _onDestroy = new Subject<void>();
 
-  constructor(private employeeService: EmployeeService,
+  constructor(private certService: CertService,
               private formBuilder: FormBuilder,
               private fileService: FileService,
+              private employeeService: EmployeeService,
               private snackbarService: SnackbarService) {
     this.certForm = formBuilder.group({
       name: ['', [Validators.required]],
@@ -82,13 +84,14 @@ export class AddCertComponent implements OnInit, OnDestroy {
 
   add(): Observable<any> {
     const formValue = this.certForm.value as ICertDt;
-    const emplId = (this.employeesSelectControl.value as IEmployeeDt).id;
     const uplF: Observable<IUploadResult>[] = [];
+
     if (this.certFileId) {
       uplF.push(of<IUploadResult>({id: this.certFileId, hash: null}));
     } else {
       uplF.push(this.fileService.uploadBin((this.certFileControl.value as FileInput).files[0]));
     }
+
     if (this.certContainerFileControl.value instanceof FileInput) {
       uplF.push(this.fileService.uploadBin(this.certContainerFileControl.value.files[0]));
     } else {
@@ -98,7 +101,7 @@ export class AddCertComponent implements OnInit, OnDestroy {
       switchMap(([certUpl, contUpl]) => {
         formValue.certFileId = certUpl.id;
         formValue.containerFileId = contUpl.id;
-        return this.employeeService.addCert(emplId, formValue);
+        return this.certService.add(formValue);
       }));
   }
 

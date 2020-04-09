@@ -1,4 +1,4 @@
-<div>
+<div style="width: min-content">
   <div fxLayout="row">
     <div class="main-info" fxLayout="column" >
       <form fxLayout="column" [formGroup]="mainForm" class="mat-elevation-z2">
@@ -239,7 +239,7 @@
     </div>
 
   </div>
-  <!--<div style="width: 100%" class="mat-elevation-z2">
+  <div style="width: 100%" class="mat-elevation-z2">
     <mat-accordion [multi]="true">
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -247,7 +247,7 @@
             Сертификаты
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <app-certs-table [showEmployeeName]="false" [certs]="employee.certs"></app-certs-table>
+        <app-certs-table [showEmployeeName]="false" [certs]="certs"></app-certs-table>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -255,10 +255,10 @@
             Устройства
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <app-devices-table [showEmployeeName]="false" [devices]="employee.devices"></app-devices-table>
+        <app-devices-table [showEmployeeName]="false" [devices]="devices"></app-devices-table>
       </mat-expansion-panel>
     </mat-accordion>
-  </div>-->
+  </div>
 </div>
 
 

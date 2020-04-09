@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IDeviceActionL} from '../../../shared/models/list-models/i-device-action-l';
+import {DeviceActionTypeService} from '../../../shared/http/device-action-type.service';
 
 @Component({
   selector: 'app-device-actions-table',
@@ -11,8 +12,7 @@ export class DeviceActionsTableComponent implements OnInit {
   @Input() deviceActions: IDeviceActionL[] = [];
   @Input() showDeviceName;
   @Output() onDelete = new EventEmitter<number>();
-  constructor() {
-
+  constructor(public deviceActionTypeService: DeviceActionTypeService) {
   }
 
   ngOnInit(): void {
